@@ -1,0 +1,5 @@
+<resources>
+	<string name="app_name">Jmail</string>
+	<string name="main_activity_name">Inbox</string>
+	<string name="action_settings">Settings</string>
+</resources>

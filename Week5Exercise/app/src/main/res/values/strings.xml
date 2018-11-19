@@ -1,0 +1,11 @@
+<!--
+  ~ Copyright (c) 2018. This code has been developed by Fabio Ciravegna, The University of Sheffield. All rights reserved. No part of this code can be used without the explicit written permission by the author
+  -->
+
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="action_settings">Settings</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="action_store_data">Save</string>
+</resources>
