@@ -33,6 +33,7 @@ android {
             minifyEnabled false
         }
     }
+    buildToolsVersion '28.0.2'
 }
 
 dependencies {
