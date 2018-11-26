@@ -18,15 +18,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.text.DateFormat;
 import java.util.Date;
 
-class LocationIntent extends IntentService {
+public class LocationService extends IntentService {
 	private Location mCurrentLocation;
 	private String mLastUpdateTime;
 
-	public LocationIntent(String name) {
+	public LocationService(String name) {
 		super(name);
 	}
 
-	public LocationIntent() {
+	public LocationService() {
 		super("Location Intent");
 	}
 
@@ -37,8 +37,6 @@ class LocationIntent extends IntentService {
 	 */
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		Log.i("tag", "foo bar");
-		Log.v("tag", "verbose message");
 		if (LocationResult.hasResult(intent)) {
 			LocationResult locResults = LocationResult.extractResult(intent);
 			if (locResults != null) {
@@ -50,7 +48,7 @@ class LocationIntent extends IntentService {
 					mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
 					Log.i("MAP", "new location " + mCurrentLocation.toString());
 					// check if the activity has not been closed in the meantime
-					if (MapsActivity.getActivity() != null)
+					if (MapsActivity.getActivity()!=null)
 						// any modification of the user interface must be done on the UI Thread. The Intent Service is running
 						// in its own thread, so it cannot communicate with the UI.
 						MapsActivity.getActivity().runOnUiThread(new Runnable() {
@@ -64,8 +62,8 @@ class LocationIntent extends IntentService {
 									MapsActivity.getMap().moveCamera(CameraUpdateFactory.newLatLng(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude())));
 									// it moves the camera to the selected zoom
 									MapsActivity.getMap().animateCamera(zoom);
-								} catch (Exception e) {
-									Log.e("LocationIntent", "Error cannot write on map " + e.getMessage());
+								} catch (Exception e ){
+									Log.e("LocationService", "Error cannot write on map "+e.getMessage());
 								}
 							}
 						});
@@ -75,4 +73,3 @@ class LocationIntent extends IntentService {
 		}
 	}
 }
-
