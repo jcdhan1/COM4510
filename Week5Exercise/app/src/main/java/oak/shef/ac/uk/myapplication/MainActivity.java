@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements ViewInterface {
                 InputMethodManager imm = (InputMethodManager)getSystemService(MainActivity.this.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(descriptionView.getWindowToken(), 0);
 
-                mPresenter.insertTitleDescription(title, description);
+                mPresenter.insertTitleDescrition(title, description);
             }
         });
     }
