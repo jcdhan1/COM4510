@@ -29,7 +29,8 @@ class MyRepository extends ViewModel {
 	 * @return
 	 */
 	public LiveData<NumberData> getNumberData() {
-		return mDBDao.retrieveOneNumber();
+		//return mDBDao.retrieveOneNumber();
+		return mDBDao.retrieveLastNumber();
 	}
 
 	/**
@@ -37,7 +38,8 @@ class MyRepository extends ViewModel {
 	 */
 	public void generateNewNumber() {
 		Random r = new Random();
-		int i1 = r.nextInt(10000 - 1) + 1;
+		//int i1 = r.nextInt(10000 - 1) + 1;
+		int i1 = (int) System.currentTimeMillis();
 		new insertAsyncTask(mDBDao).execute(new NumberData(i1));
 	}
 
@@ -57,5 +59,8 @@ class MyRepository extends ViewModel {
 			//            Log.i("TAG", ix+"");
 			return null;
 		}
+
+
+
 	}
 }

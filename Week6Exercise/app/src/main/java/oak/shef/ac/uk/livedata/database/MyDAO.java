@@ -21,6 +21,10 @@ public interface MyDAO {
 	@Query("SELECT * FROM numberData ORDER BY RANDOM() LIMIT 1")
 	LiveData<NumberData> retrieveOneNumber();
 
+	// it selects most recent element
+	@Query("SELECT * FROM numberData ORDER BY number DESC LIMIT 1")
+	LiveData<NumberData> retrieveLastNumber();
+
 	@Delete
 	void deleteAll(NumberData... numberData);
 

@@ -9,17 +9,19 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
+import oak.shef.ac.uk.livedata.database.NumberData;
+
 public class MyViewModel extends AndroidViewModel {
     private final MyRepository mRepository;
 
-    LiveData<String> stringToDisplay;
+    private LiveData<NumberData> numberToDisplay;
 
     public MyViewModel (Application application) {
         super(application);
         // creation and connection to the Repository
         mRepository = new MyRepository(application);
         // connection to the live data
-        stringToDisplay = mRepository.getStringToDisplay();
+        numberToDisplay = mRepository.getNumberData();
     }
 
 
@@ -27,11 +29,11 @@ public class MyViewModel extends AndroidViewModel {
      * getter for the live data
      * @return
      */
-    LiveData<String> getStringToDisplay() {
-        if (stringToDisplay == null) {
-            stringToDisplay = new MutableLiveData<String>();
+    public LiveData<NumberData> getNumberDataToDisplay() {
+        if (numberToDisplay == null) {
+            numberToDisplay = new MutableLiveData<NumberData>();
         }
-        return stringToDisplay;
+        return numberToDisplay;
     }
 
     /**
