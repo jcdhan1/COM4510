@@ -30,7 +30,7 @@ public class Presenter implements PresenterInterface {
      * @param description
      */
     @Override
-    public void insertTitleDescrition(String title, String description) {
+    public void insertTitleDescription(String title, String description) {
         // send it to the model
         mModel.insertTitleDescription(title, description);
     }

@@ -6,6 +6,9 @@ package oak.shef.ac.uk.myapplication.model;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
+
+import java.util.*;
 
 import oak.shef.ac.uk.myapplication.presenter.Presenter;
 
@@ -51,6 +54,11 @@ public class Model {
         @Override
         protected Void doInBackground(final Void... params) {
             mPhotoDao.insert(mPhotoData);
+            List<PhotoData> currentData = mPhotoDao.retrieveAllData();
+            for (PhotoData pd: currentData) {
+                Log.i("Model", pd.getTitle());
+            }
+
             return null;
         }
 
