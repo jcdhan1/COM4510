@@ -1,58 +1,89 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2018. This code has been developed by Fabio Ciravegna, The University of Sheffield. All rights reserved. No part of this code can be used without the explicit written permission by the author
   -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
-<LinearLayout
-		xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<LinearLayout xmlns:tools="http://schemas.android.com/tools"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		tools:context="oak.shef.ac.uk.livedata.EditorView" android:orientation="vertical">
-	<EditText
-			android:layout_width="match_parent"
+		android:orientation="vertical"
+		tools:context="oak.shef.ac.uk.livedata.EditorView">
+
+		<EditText
 			android:id="@+id/edt_title"
+			style="@style/Base.TextAppearance.AppCompat.Medium"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:maxLines="1"
 			android:hint="@string/titleWatermark"
-			android:singleLine="true" android:inputType="text|textAutoCorrect|textAutoComplete"
-			style="@style/Base.TextAppearance.AppCompat.Medium"/>
-	<EditText
-			android:layout_width="match_parent"
-			android:id="@+id/edt_description"
-			android:layout_height="wrap_content"
+			android:inputType="text|textAutoCorrect|textAutoComplete"
 			android:maxLines="1"
-			android:hint="@string/descriptionWatermark"
-			android:singleLine="true" android:inputType="text|textAutoCorrect|textAutoComplete"
-			style="@style/Base.TextAppearance.AppCompat.Medium"/>
-	<TextView
-			android:id="@+id/lbl_datetime"
-			android:text="@string/dateTimeLabel"
+			android:singleLine="true" />
+
+		<EditText
+			android:id="@+id/edt_description"
+			style="@style/Base.TextAppearance.AppCompat.Medium"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:labelFor="@id/edt_date" tools:style="@style/Base.TextAppearance.AppCompat.Small"
-			android:paddingLeft="4dp"/>
-	<RelativeLayout
+			android:hint="@string/descriptionWatermark"
+			android:inputType="text|textAutoCorrect|textAutoComplete"
+			android:maxLines="1"
+			android:singleLine="true" />
+
+		<TextView
+			android:id="@+id/lbl_datetime"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_width="match_parent">
-		<DatePicker
+			android:labelFor="@id/edt_date"
+			android:paddingLeft="4dp"
+			android:text="@string/dateTimeLabel"
+			tools:style="@style/Base.TextAppearance.AppCompat.Small" />
+
+		<com.google.android.flexbox.FlexboxLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:app="http://schemas.android.com/apk/res-auto"
+			android:layout_width="match_parent"
+			app:flexWrap="wrap"
+			app:alignItems="stretch"
+			app:alignContent="stretch"
+			app:showDivider="beginning|middle|end"
+			app:dividerDrawable="@drawable/divider"
+			android:layout_height="wrap_content">
+
+			<DatePicker
 				android:id="@+id/edt_date"
-				android:layout_width="wrap_content"
+				android:layout_width="220dp"
 				android:layout_height="wrap_content"
-				android:layout_alignParentLeft="true"
-				android:layout_alignParentTop="true"
-				android:datePickerMode="spinner"
-				android:calendarViewShown="false"/>
-		<TimePicker
+				android:layout_marginLeft="-5dp"
+				android:layout_marginRight="-10dp"
+				android:calendarViewShown="false"
+				app:layout_flexGrow="0"
+				android:datePickerMode="spinner" />
+
+			<TimePicker
 				android:id="@+id/edt_time"
+				android:layout_width="160dp"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="-10dp"
+				android:layout_marginRight="-10dp"
+				android:layout_toRightOf="@+id/edt_date"
+				android:timePickerMode="spinner" />
+
+
+			<EditText
+				android:id="@+id/edt_placeholder"
+				style="@style/Base.TextAppearance.AppCompat.Medium"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_alignParentRight="true"
-				android:layout_alignParentTop="true"
-				android:timePickerMode="spinner"/>
-	</RelativeLayout>
+				app:layout_flexGrow="1"
+				android:hint="Map will go here"
+				android:inputType="text|textAutoCorrect|textAutoComplete"
+				android:maxLines="1"
+				android:singleLine="true" />
+		</com.google.android.flexbox.FlexboxLayout>
+
 		<!--<Button
 				android:id="@+id/btnSave"
 				android:layout_width="wrap_content"

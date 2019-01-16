@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TimePicker;
 
 import oak.shef.ac.uk.livedata.database.PhotoData;
 
@@ -29,8 +30,9 @@ public class EditorView extends AppCompatActivity {
         // when the observed data changes and the activity is
         // in the foreground.
 
-		//TimePicker timePicker = findViewById(R.id.edtTime);
-		//timePicker.setIs24HourView(true);
+		//24 Hour time picker
+		TimePicker timePicker = findViewById(R.id.edt_time);
+		timePicker.setIs24HourView(true);
         myViewModel.getPhotoDataToDisplay().observe(this, new Observer<PhotoData>(){
             @Override
             public void onChanged(@Nullable final PhotoData newValue) {
