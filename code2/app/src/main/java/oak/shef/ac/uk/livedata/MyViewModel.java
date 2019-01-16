@@ -14,14 +14,14 @@ import oak.shef.ac.uk.livedata.database.PhotoData;
 public class MyViewModel extends AndroidViewModel {
     private final MyRepository mRepository;
 
-    private LiveData<PhotoData> numberToDisplay;
+    private LiveData<PhotoData> photoToDisplay;
 
     public MyViewModel (Application application) {
         super(application);
         // creation and connection to the Repository
         mRepository = new MyRepository(application);
         // connection to the live data
-        numberToDisplay = mRepository.getPhotoData();
+        photoToDisplay = mRepository.getPhotoData();
     }
 
 
@@ -30,10 +30,10 @@ public class MyViewModel extends AndroidViewModel {
      * @return
      */
     public LiveData<PhotoData> getPhotoDataToDisplay() {
-        if (numberToDisplay == null) {
-            numberToDisplay = new MutableLiveData<PhotoData>();
+        if (photoToDisplay == null) {
+            photoToDisplay = new MutableLiveData<PhotoData>();
         }
-        return numberToDisplay;
+        return photoToDisplay;
     }
 
     /**

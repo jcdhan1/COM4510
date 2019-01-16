@@ -4,19 +4,18 @@
 
 package oak.shef.ac.uk.livedata;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import oak.shef.ac.uk.livedata.database.PhotoData;
 
-public class MyView extends AppCompatActivity {
+public class EditorView extends AppCompatActivity {
     private MyViewModel myViewModel;
 
     @Override
@@ -29,27 +28,67 @@ public class MyView extends AppCompatActivity {
         // Add an observer on the LiveData. The onChanged() method fires
         // when the observed data changes and the activity is
         // in the foreground.
+
+		//TimePicker timePicker = findViewById(R.id.edtTime);
+		//timePicker.setIs24HourView(true);
         myViewModel.getPhotoDataToDisplay().observe(this, new Observer<PhotoData>(){
             @Override
             public void onChanged(@Nullable final PhotoData newValue) {
-                TextView tv= findViewById(R.id.textView);
+
+
+
+
+            	//TODO: LiveData RecyclerView?
+
+                /*TextView tv= findViewById(R.id.textView);
                 // if database is empty
                 if (newValue==null)
                     tv.setText("click button");
                 else
-                    tv.setText(newValue.getDescription());
+                    tv.setText(newValue.getDescription());*/
             }});
 
 
         // it generates a request to generate a new random number
-        Button button = findViewById(R.id.button);
+        /*Button button = findViewById(R.id.btnSave);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 myViewModel.generateNewNumber();
             }
-        });
+        });*/
 
     }
+
+	@Override
+	/**
+	 * @item the selected item
+	 * What happens when the items on the action bar are selected.
+	 */
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch(item.getItemId()){
+			case R.id.btn_save:
+
+				myViewModel.generateNewNumber();
+
+
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+
+    @Override
+	/**
+	 * @menu
+	 * Set the action bar for the editor view.
+	 */
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_editor, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 }
 

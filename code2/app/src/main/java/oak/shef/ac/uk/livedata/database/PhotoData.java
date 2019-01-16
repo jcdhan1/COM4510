@@ -15,8 +15,8 @@ public class PhotoData {
     @PrimaryKey(autoGenerate = true)
     @android.support.annotation.NonNull
     private int id=0;
-    private String title;
-    private String description;
+    private String title, description;
+
     @Ignore
     public Bitmap picture;
 

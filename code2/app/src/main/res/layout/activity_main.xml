@@ -2,41 +2,79 @@
 <!--
   ~ Copyright (c) 2018. This code has been developed by Fabio Ciravegna, The University of Sheffield. All rights reserved. No part of this code can be used without the explicit written permission by the author
   -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="oak.shef.ac.uk.livedata.MyView">
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+<LinearLayout
+		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context="oak.shef.ac.uk.livedata.EditorView" android:orientation="vertical">
+	<EditText
+			android:layout_width="match_parent"
+			android:id="@+id/edt_title"
+			android:layout_height="wrap_content"
+			android:maxLines="1"
+			android:hint="@string/titleWatermark"
+			android:singleLine="true" android:inputType="text|textAutoCorrect|textAutoComplete"
+			style="@style/Base.TextAppearance.AppCompat.Medium"/>
+	<EditText
+			android:layout_width="match_parent"
+			android:id="@+id/edt_description"
+			android:layout_height="wrap_content"
+			android:maxLines="1"
+			android:hint="@string/descriptionWatermark"
+			android:singleLine="true" android:inputType="text|textAutoCorrect|textAutoComplete"
+			style="@style/Base.TextAppearance.AppCompat.Medium"/>
+	<TextView
+			android:id="@+id/lbl_datetime"
+			android:text="@string/dateTimeLabel"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:labelFor="@id/edt_date" tools:style="@style/Base.TextAppearance.AppCompat.Small"
+			android:paddingLeft="4dp"/>
+	<RelativeLayout
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent">
+		<DatePicker
+				android:id="@+id/edt_date"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_alignParentTop="true"
+				android:datePickerMode="spinner"
+				android:calendarViewShown="false"/>
+		<TimePicker
+				android:id="@+id/edt_time"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentRight="true"
+				android:layout_alignParentTop="true"
+				android:timePickerMode="spinner"/>
+	</RelativeLayout>
+		<!--<Button
+				android:id="@+id/btnSave"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				android:layout_marginTop="8dp"
+				android:layout_marginEnd="8dp"
+				android:layout_marginBottom="8dp"
+				android:text="@string/saveText"
+		/>-->
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.521"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.729" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="123456"
-        android:textSize="58sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="174dp"
-        tools:text="12345" />
-
-</android.support.constraint.ConstraintLayout>
+		<!-- <TextView
+			android:id="@+id/textView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="8dp"
+			android:layout_marginEnd="8dp"
+			android:text="123456"
+			android:textSize="58sp"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			tools:layout_editor_absoluteY="174dp"
+			tools:text="12345" />-->
+	</LinearLayout>
+</ScrollView>

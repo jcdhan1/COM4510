@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Live Data</string>
+	<string name="titleWatermark">Enter a title...</string>
+	<string name="saveText">Save</string>
+	<string name="descriptionWatermark">Enter a description...</string>
+	<string name="dateTimeLabel"><![CDATA[Date & Time]]></string>
 </resources>
