@@ -1,120 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2018. This code has been developed by Fabio Ciravegna, The University of Sheffield. All rights reserved. No part of this code can be used without the explicit written permission by the author
   -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent">
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	tools:context="oak.shef.ac.uk.livedata.EditorView">
 
-	<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+	<com.google.android.flexbox.FlexboxLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:orientation="vertical"
-		tools:context="oak.shef.ac.uk.livedata.EditorView">
-
-		<EditText
-			android:id="@+id/edt_title"
-			style="@style/Base.TextAppearance.AppCompat.Medium"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/titleWatermark"
-			android:inputType="text|textAutoCorrect|textAutoComplete"
-			android:maxLines="1"
-			android:singleLine="true" />
-
-		<EditText
-			android:id="@+id/edt_description"
-			style="@style/Base.TextAppearance.AppCompat.Medium"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/descriptionWatermark"
-			android:inputType="text|textAutoCorrect|textAutoComplete"
-			android:maxLines="1"
-			android:singleLine="true" />
-
-		<TextView
-			android:id="@+id/lbl_datetime"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:labelFor="@id/edt_date"
-			android:paddingLeft="4dp"
-			android:text="@string/dateTimeLabel"
-			tools:style="@style/Base.TextAppearance.AppCompat.Small" />
-
-		<com.google.android.flexbox.FlexboxLayout
-			xmlns:android="http://schemas.android.com/apk/res/android"
-			xmlns:app="http://schemas.android.com/apk/res-auto"
-			android:layout_width="match_parent"
-			app:flexWrap="wrap"
-			app:alignItems="stretch"
-			app:alignContent="stretch"
-			app:showDivider="beginning|middle|end"
-			app:dividerDrawable="@drawable/divider"
-			android:layout_height="wrap_content">
-
-			<DatePicker
-				android:id="@+id/edt_date"
-				android:layout_width="220dp"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="-5dp"
-				android:layout_marginRight="-10dp"
-				android:calendarViewShown="false"
-				app:layout_flexGrow="0"
-				android:datePickerMode="spinner" />
-
-			<TimePicker
-				android:id="@+id/edt_time"
-				android:layout_width="160dp"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="-10dp"
-				android:layout_marginRight="-10dp"
-				android:layout_toRightOf="@+id/edt_date"
-				android:timePickerMode="spinner" />
-
+		app:flexWrap="wrap"
+		app:alignItems="stretch"
+		app:alignContent="stretch"
+		app:showDivider="beginning|middle|end"
+		app:dividerDrawable="@drawable/divider"
+		android:layout_height="wrap_content">
+		<LinearLayout
+			android:layout_width="220dp"
+			app:layout_flexGrow="1"
+			android:layout_height="match_parent"
+			android:orientation="vertical">
 
 			<EditText
-				android:id="@+id/edt_placeholder"
+				android:id="@+id/edt_title"
 				style="@style/Base.TextAppearance.AppCompat.Medium"
-				android:layout_width="wrap_content"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				app:layout_flexGrow="1"
-				android:hint="Map will go here"
+				android:hint="@string/titleWatermark"
 				android:inputType="text|textAutoCorrect|textAutoComplete"
 				android:maxLines="1"
 				android:singleLine="true" />
 
-			<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-				xmlns:map="http://schemas.android.com/apk/res-auto"
-				xmlns:tools="http://schemas.android.com/tools"
-				android:id="@+id/map"
-				android:name="com.google.android.gms.maps.SupportMapFragment"
+			<EditText
+				android:id="@+id/edt_description"
+				style="@style/Base.TextAppearance.AppCompat.Medium"
 				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				tools:context=".MapsActivity" />
-		</com.google.android.flexbox.FlexboxLayout>
-
-		<!--<Button
-				android:id="@+id/btnSave"
+				android:layout_height="wrap_content"
+				android:hint="@string/descriptionWatermark"
+				android:inputType="text|textAutoCorrect|textAutoComplete"
+				android:maxLines="1"
+				android:singleLine="true" />
+		</LinearLayout>
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
+			<TextView
+				android:id="@+id/lbl_date"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginStart="8dp"
-				android:layout_marginTop="8dp"
-				android:layout_marginEnd="8dp"
-				android:layout_marginBottom="8dp"
-				android:text="@string/saveText"
-		/>-->
+				android:labelFor="@id/btn_date"
+				android:text="@string/dateTimeLabel"
+				tools:style="@style/Base.TextAppearance.AppCompat.Small" />
+			<Button
+				android:id="@+id/btn_date"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerHorizontal="true"
+				android:onClick="setDate"
+				android:text="Set Date" />
+		</LinearLayout>
 
-		<!-- <TextView
-			android:id="@+id/textView"
+
+	</com.google.android.flexbox.FlexboxLayout>
+
+
+	<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:map="http://schemas.android.com/apk/res-auto"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:id="@+id/map"
+		android:name="com.google.android.gms.maps.SupportMapFragment"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context=".MapsActivity" />
+	<!--<Button
+			android:id="@+id/btnSave"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="8dp"
+			android:layout_marginTop="8dp"
 			android:layout_marginEnd="8dp"
-			android:text="123456"
-			android:textSize="58sp"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			tools:layout_editor_absoluteY="174dp"
-			tools:text="12345" />-->
-	</LinearLayout>
-</ScrollView>
+			android:layout_marginBottom="8dp"
+			android:text="@string/saveText"
+	/>-->
+
+	<!-- <TextView
+		android:id="@+id/textView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="8dp"
+		android:layout_marginEnd="8dp"
+		android:text="123456"
+		android:textSize="58sp"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		tools:layout_editor_absoluteY="174dp"
+		tools:text="12345" />-->
+</LinearLayout>
