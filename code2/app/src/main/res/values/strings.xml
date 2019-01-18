@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Live Data</string>
+	<string name="app_name">Photo App</string>
 	<string name="titleWatermark">Enter a title...</string>
 	<string name="saveText">Save</string>
 	<string name="descriptionWatermark">Enter a description...</string>

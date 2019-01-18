@@ -6,11 +6,9 @@ package oak.shef.ac.uk.livedata;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-
-import java.util.Calendar;
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -20,32 +18,35 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 import oak.shef.ac.uk.livedata.database.PhotoData;
 
 public class EditorView extends AppCompatActivity {
 	private MyViewModel myViewModel;
-	private DatePicker datePicker;
 	private Calendar calendar;
-	private TextView dateView;
-	private int year, month, day;
+	private Button btnDate, btnTime;
+	private int year, month, day, hour, minute;
 
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		dateView = (TextView) findViewById(R.id.lbl_date);
+		btnDate = (Button) findViewById(R.id.btn_date);
+		btnTime = (Button) findViewById(R.id.btn_time);
 		calendar = Calendar.getInstance();
 		year = calendar.get(Calendar.YEAR);
 
 		month = calendar.get(Calendar.MONTH);
 		day = calendar.get(Calendar.DAY_OF_MONTH);
 		showDate(year, month + 1, day);
+		hour=calendar.get(Calendar.HOUR_OF_DAY);
+		minute=calendar.get(Calendar.MINUTE);
+		showTime(hour, minute);
 
 
 		// Get a new or existing ViewModel from the ViewModelProvider.
@@ -81,14 +82,21 @@ public class EditorView extends AppCompatActivity {
         });*/
 
 
-		//setDate
-		Button button = findViewById(R.id.btn_date);
-		button.setOnClickListener(new View.OnClickListener() {
+		//set date
+		btnDate.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				setDate(v);
 			}
 		});
+		//set time
+		btnTime.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				setTime(v);
+			}
+		});
+
 	}
 
 	@SuppressWarnings("deprecation")
@@ -98,6 +106,13 @@ public class EditorView extends AppCompatActivity {
 				Toast.LENGTH_SHORT)
 				.show();
 	}
+	public void setTime(View view) {
+		showDialog(998);
+		Toast.makeText(getApplicationContext(), "Enter a time...",
+				Toast.LENGTH_SHORT)
+				.show();
+	}
+
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
@@ -105,6 +120,9 @@ public class EditorView extends AppCompatActivity {
 		if (id == 999) {
 			return new DatePickerDialog(this,
 					myDateListener, year, month, day);
+		}
+		if (id == 998) {
+			return new TimePickerDialog(this,myTimeListener,hour,minute,true);
 		}
 		return null;
 	}
@@ -122,11 +140,28 @@ public class EditorView extends AppCompatActivity {
 				}
 			};
 
+	private TimePickerDialog.OnTimeSetListener myTimeListener = new
+			TimePickerDialog.OnTimeSetListener() {
+				@Override
+				public void onTimeSet(TimePicker arg0,
+									  int arg1, int arg2) {
+					// TODO Auto-generated method stub
+					// arg1 = year
+					// arg2 = month
+					// arg3 = day
+					showTime(arg1, arg2);
+				}
+			};
+
 	private void showDate(int year, int month, int day) {
-		dateView.setText(new StringBuilder().append(day).append("/")
+		btnDate.setText(new StringBuilder().append(day).append("/")
 				.append(month).append("/").append(year));
 	}
 
+	private void showTime(int hour, int minute) {
+		btnTime.setText(new StringBuilder().append(hour).append(":")
+				.append(minute));
+	}
 
 	@Override
 	/**
@@ -145,7 +180,6 @@ public class EditorView extends AppCompatActivity {
 				return super.onOptionsItemSelected(item);
 		}
 	}
-
 
 	@Override
 	/**
