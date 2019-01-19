@@ -10,6 +10,7 @@ import android.arch.lifecycle.ViewModel;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.util.Date;
 import java.util.Random;
 
 import oak.shef.ac.uk.livedata.database.PhotoDAO;
@@ -41,7 +42,7 @@ class MyRepository extends ViewModel {
 		Random r = new Random();
 		//int i1 = r.nextInt(10000 - 1) + 1;
 		int i1 = (int) System.currentTimeMillis();
-		new insertAsyncTask(mDBDao).execute(new PhotoData("Title", "Description" + Integer.toString(i1)));
+		new insertAsyncTask(mDBDao).execute(new PhotoData("Title", "Description" + Integer.toString(i1),new Date(2323223232L), 0, 0));
 	}
 
 	private static class insertAsyncTask extends AsyncTask<PhotoData, Void, Void> {

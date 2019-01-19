@@ -6,10 +6,12 @@ package oak.shef.ac.uk.livedata.database;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
 @android.arch.persistence.room.Database(entities = {PhotoData.class}, version = 1, exportSchema = false)
+@TypeConverters({Converters.class})
 public abstract class PhotoDatabase extends RoomDatabase {
     public abstract PhotoDAO photoDao();
 
