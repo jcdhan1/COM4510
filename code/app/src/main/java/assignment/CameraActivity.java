@@ -22,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import java.io.File;
@@ -36,7 +37,8 @@ public class CameraActivity extends AppCompatActivity {
     private static final int REQUEST_READ_EXTERNAL_STORAGE = 2987;
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 7829;
     private static final String TAG = "CameraActivity";
-    private List<ImageElement> myPictureList = new ArrayList<>();
+	private static final String PHOTOS_KEY = "easy_image_photos_list";
+    private ArrayList<ImageElement> myPictureList = new ArrayList<>();
     private RecyclerView.Adapter  mAdapter;
     private RecyclerView mRecyclerView;
 
@@ -46,6 +48,10 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+		if (savedInstanceState != null) {
+			myPictureList = savedInstanceState.getParcelableArrayList(PHOTOS_KEY);
+		}
         setContentView(R.layout.activity_camera);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,7 +65,6 @@ public class CameraActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
         mAdapter= new MyAdapter(myPictureList);
         mRecyclerView.setAdapter(mAdapter);
-
         // required by Android 6.0 +
         checkPermissions(getApplicationContext());
 
@@ -84,10 +89,10 @@ public class CameraActivity extends AppCompatActivity {
 
     private void initEasyImage() {
         EasyImage.configuration(this)
-                .setImagesFolderName("EasyImage sample")
-                .setCopyTakenPhotosToPublicGalleryAppFolder(true)
-                .setCopyPickedImagesToPublicGalleryAppFolder(false)
-                .setAllowMultiplePickInGallery(true);
+                .setImagesFolderName("Photo Manager")
+				.setCopyTakenPhotosToPublicGalleryAppFolder(true)
+				.setCopyPickedImagesToPublicGalleryAppFolder(true)
+				.setAllowMultiplePickInGallery(true);
     }
 
     private void checkPermissions(final Context context) {
@@ -157,15 +162,6 @@ public class CameraActivity extends AppCompatActivity {
             public void onImagesPicked(List<File> imageFiles, EasyImage.ImageSource source, int type) {
                 onPhotosReturned(imageFiles);
             }
-
-            @Override
-            public void onCanceled(EasyImage.ImageSource source, int type) {
-                //Cancel handling, you might wanna remove taken photo if it was canceled
-                if (source == EasyImage.ImageSource.CAMERA) {
-                    File photoFile = EasyImage.lastlyTakenButCanceledPhoto(getActivity());
-                    if (photoFile != null) photoFile.delete();
-                }
-            }
         });
     }
 
@@ -198,6 +194,11 @@ public class CameraActivity extends AppCompatActivity {
         return activity;
     }
 
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putParcelableArrayList(PHOTOS_KEY, myPictureList);
+	}
 
 
 }

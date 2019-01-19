@@ -72,7 +72,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.View_Holder> {
 
     @Override
     public int getItemCount() {
-        return items.size();
+    	try {
+			return items.size();
+		} catch(NullPointerException e) {
+    		return 0;
+		}
     }
 
     public class View_Holder extends RecyclerView.ViewHolder  {
