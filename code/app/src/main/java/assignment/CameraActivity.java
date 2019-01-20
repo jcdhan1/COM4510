@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -48,9 +49,18 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+		if (savedInstanceState == null) {
+			File[] files_array;
+			files_array = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/PhotoApp").listFiles();
+			for(File f : files_array) {
+				myPictureList.add(new ImageElement(f));
+			}
+		}
 		if (savedInstanceState != null) {
 			myPictureList = savedInstanceState.getParcelableArrayList(PHOTOS_KEY);
+			for (ImageElement img : myPictureList) {
+				Log.i("all paths", img.file.getAbsolutePath());
+			}
 		}
         setContentView(R.layout.activity_camera);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -89,7 +99,7 @@ public class CameraActivity extends AppCompatActivity {
 
     private void initEasyImage() {
         EasyImage.configuration(this)
-                .setImagesFolderName("Photo Manager")
+                .setImagesFolderName("PhotoApp")
 				.setCopyTakenPhotosToPublicGalleryAppFolder(true)
 				.setCopyPickedImagesToPublicGalleryAppFolder(true)
 				.setAllowMultiplePickInGallery(true);
