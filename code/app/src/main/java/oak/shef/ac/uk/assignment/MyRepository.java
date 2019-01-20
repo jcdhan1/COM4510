@@ -41,7 +41,7 @@ class MyRepository extends ViewModel {
 		Random r = new Random();
 		//int i1 = r.nextInt(10000 - 1) + 1;
 		int i1 = (int) System.currentTimeMillis();
-		new insertAsyncTask(mDBDao).execute(new PhotoData("Title", "Description" + Integer.toString(i1),new Date(2323223232L), 0, 0));
+		new insertAsyncTask(mDBDao).execute(new PhotoData("Title", "Description" + Integer.toString(i1),"",new Date(2323223232L), 0, 0));
 	}
 
 	private static class insertAsyncTask extends AsyncTask<PhotoData, Void, Void> {

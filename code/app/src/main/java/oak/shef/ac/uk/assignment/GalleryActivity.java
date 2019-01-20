@@ -24,7 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import oak.shef.ac.uk.assignment.database.ImageElement;
+import oak.shef.ac.uk.assignment.database.PhotoData;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
@@ -32,7 +32,7 @@ public class GalleryActivity extends AppCompatActivity {
 
     private static final String TAG = "GalleryActivity";
 	private static final String PHOTOS_KEY = "easy_image_photos_list";
-    private ArrayList<ImageElement> myPictureList = new ArrayList<>();
+    private ArrayList<PhotoData> myPictureList = new ArrayList<>();
     private RecyclerView.Adapter  mAdapter;
     private RecyclerView mRecyclerView;
 
@@ -47,13 +47,13 @@ public class GalleryActivity extends AppCompatActivity {
 			files_array = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/PhotoApp").listFiles();
 			if (files_array!=null) {
 				for (File f : files_array) {
-					myPictureList.add(new ImageElement(f.getAbsolutePath()));
+					myPictureList.add(new PhotoData(f.getAbsolutePath()));
 				}
 			}
 		}
 		if (savedInstanceState != null) {
 			myPictureList = savedInstanceState.getParcelableArrayList(PHOTOS_KEY);
-			for (ImageElement img : myPictureList) {
+			for (PhotoData img : myPictureList) {
 				Log.i("all paths", img.getFilePath());
 			}
 		}
@@ -140,7 +140,7 @@ public class GalleryActivity extends AppCompatActivity {
      * @param returnedPhotos
      */
     private void onPhotosReturned(List<File> returnedPhotos) {
-        myPictureList.addAll(getImageElements(returnedPhotos));
+        myPictureList.addAll(getPhotoDatas(returnedPhotos));
         mAdapter.notifyDataSetChanged();
         mRecyclerView.scrollToPosition(returnedPhotos.size() - 1);
     }
@@ -150,13 +150,13 @@ public class GalleryActivity extends AppCompatActivity {
      * @param returnedPhotos
      * @return
      */
-    private List<ImageElement> getImageElements(List<File> returnedPhotos) {
-        List<ImageElement> imageElementList= new ArrayList<>();
+    private List<PhotoData> getPhotoDatas(List<File> returnedPhotos) {
+        List<PhotoData> PhotoDataList= new ArrayList<>();
         for (File file: returnedPhotos){
-            ImageElement element= new ImageElement(file.getAbsolutePath());
-            imageElementList.add(element);
+            PhotoData element= new PhotoData(file.getAbsolutePath());
+            PhotoDataList.add(element);
         }
-        return imageElementList;
+        return PhotoDataList;
     }
 
     public Activity getActivity() {

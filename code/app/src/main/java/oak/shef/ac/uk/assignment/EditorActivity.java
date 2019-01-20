@@ -193,7 +193,7 @@ public class EditorActivity extends AppCompatActivity {
 				simpleDateFormat.setTimeZone(TimeZone.getDefault()); // Use phone's local timezone
 				try {
 					Date dateTime = simpleDateFormat.parse(btnDate.getText().toString() + " " + btnTime.getText().toString());
-					PhotoData toSave = new PhotoData(edtTitle.getText().toString(), edtDescription.getText().toString(), dateTime, 0,0);
+					PhotoData toSave = new PhotoData(edtTitle.getText().toString(), edtDescription.getText().toString(), "", dateTime, 0,0);
 
 					Log.i("EditorActivity", toSave.toString());
 				} catch (ParseException e) {

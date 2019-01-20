@@ -9,7 +9,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
-import oak.shef.ac.uk.assignment.database.ImageElement;
+import oak.shef.ac.uk.assignment.database.PhotoData;
 
 public class ShowImageActivity extends AppCompatActivity {
 
@@ -24,7 +24,7 @@ public class ShowImageActivity extends AppCompatActivity {
             position = b.getInt("position");
             if (position!=-1){
                 ImageView imageView = (ImageView) findViewById(R.id.image);
-                ImageElement element= ImageAdapter.getItems().get(position);
+                PhotoData element= ImageAdapter.getItems().get(position);
                 if (element.getImage()!=-1) {
                     imageView.setImageResource(element.getImage());
                 } else if (element.getFilePath()!=null) {

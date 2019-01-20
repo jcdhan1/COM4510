@@ -13,19 +13,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import oak.shef.ac.uk.assignment.database.ImageElement;
+import oak.shef.ac.uk.assignment.database.PhotoData;
 
 import java.util.List;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.View_Holder> {
     static private Context context;
-    private static List<ImageElement> items;
+    private static List<PhotoData> items;
 
-    public ImageAdapter(List<ImageElement> items) {
+    public ImageAdapter(List<PhotoData> items) {
         this.items = items;
     }
 
-    public ImageAdapter(Context cont, List<ImageElement> items) {
+    public ImageAdapter(Context cont, List<PhotoData> items) {
         super();
         this.items = items;
         context = cont;
@@ -67,7 +67,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.View_Holder>
 
 
     // convenience method for getting data at click position
-    ImageElement getItem(int id) {
+    PhotoData getItem(int id) {
         return items.get(id);
     }
 
@@ -93,11 +93,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.View_Holder>
 
     }
 
-    public static List<ImageElement> getItems() {
+    public static List<PhotoData> getItems() {
         return items;
     }
 
-    public static void setItems(List<ImageElement> items) {
+    public static void setItems(List<PhotoData> items) {
         ImageAdapter.items = items;
     }
 }
