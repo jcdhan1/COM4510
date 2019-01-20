@@ -33,11 +33,11 @@ import java.util.List;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
-public class MainActivity extends AppCompatActivity {
+public class GalleryActivity extends AppCompatActivity {
 
     private static final int REQUEST_READ_EXTERNAL_STORAGE = 2987;
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 7829;
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "GalleryActivity";
 	private static final String PHOTOS_KEY = "easy_image_photos_list";
     private ArrayList<ImageElement> myPictureList = new ArrayList<>();
     private RecyclerView.Adapter  mAdapter;
@@ -52,8 +52,10 @@ public class MainActivity extends AppCompatActivity {
 		if (savedInstanceState == null) {
 			File[] files_array;
 			files_array = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/PhotoApp").listFiles();
-			for(File f : files_array) {
-				myPictureList.add(new ImageElement(f));
+			if (files_array!=null) {
+				for (File f : files_array) {
+					myPictureList.add(new ImageElement(f));
+				}
 			}
 		}
 		if (savedInstanceState != null) {
@@ -62,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 				Log.i("all paths", img.file.getAbsolutePath());
 			}
 		}
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_gallery);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -209,6 +211,4 @@ public class MainActivity extends AppCompatActivity {
 		super.onSaveInstanceState(outState);
 		outState.putParcelableArrayList(PHOTOS_KEY, myPictureList);
 	}
-
-
 }

@@ -35,7 +35,7 @@ import java.util.TimeZone;
 
 import oak.shef.ac.uk.assignment.database.PhotoData;
 
-public class EditorView extends AppCompatActivity {
+public class EditorActivity extends AppCompatActivity {
 
 	private MyViewModel myViewModel;
 	private static final int MY_LOCATION_REQUEST_CODE = 1;
@@ -195,7 +195,7 @@ public class EditorView extends AppCompatActivity {
 					Date dateTime = simpleDateFormat.parse(btnDate.getText().toString() + " " + btnTime.getText().toString());
 					PhotoData toSave = new PhotoData(edtTitle.getText().toString(), edtDescription.getText().toString(), dateTime, 0,0);
 
-					Log.i("EditorView", toSave.toString());
+					Log.i("EditorActivity", toSave.toString());
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
