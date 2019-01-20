@@ -16,15 +16,15 @@ import android.widget.ImageView;
 
 import java.util.List;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.View_Holder> {
+public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.View_Holder> {
     static private Context context;
     private static List<ImageElement> items;
 
-    public MyAdapter(List<ImageElement> items) {
+    public ImageAdapter(List<ImageElement> items) {
         this.items = items;
     }
 
-    public MyAdapter(Context cont, List<ImageElement> items) {
+    public ImageAdapter(Context cont, List<ImageElement> items) {
         super();
         this.items = items;
         context = cont;
@@ -97,6 +97,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.View_Holder> {
     }
 
     public static void setItems(List<ImageElement> items) {
-        MyAdapter.items = items;
+        ImageAdapter.items = items;
     }
 }

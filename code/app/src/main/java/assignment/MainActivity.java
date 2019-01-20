@@ -33,11 +33,11 @@ import java.util.List;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
-public class CameraActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_READ_EXTERNAL_STORAGE = 2987;
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 7829;
-    private static final String TAG = "CameraActivity";
+    private static final String TAG = "MainActivity";
 	private static final String PHOTOS_KEY = "easy_image_photos_list";
     private ArrayList<ImageElement> myPictureList = new ArrayList<>();
     private RecyclerView.Adapter  mAdapter;
@@ -62,7 +62,7 @@ public class CameraActivity extends AppCompatActivity {
 				Log.i("all paths", img.file.getAbsolutePath());
 			}
 		}
-        setContentView(R.layout.activity_camera);
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -73,7 +73,7 @@ public class CameraActivity extends AppCompatActivity {
         // set up the RecyclerView
         int numberOfColumns = 4;
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
-        mAdapter= new MyAdapter(myPictureList);
+        mAdapter= new ImageAdapter(myPictureList);
         mRecyclerView.setAdapter(mAdapter);
         // required by Android 6.0 +
         checkPermissions(getApplicationContext());

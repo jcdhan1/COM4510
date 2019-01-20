@@ -4,7 +4,6 @@
 
 package oak.shef.ac.uk.livedata;
 
-import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -65,7 +64,7 @@ public class EditorView extends AppCompatActivity implements GoogleMap.OnMyLocat
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_editor);
 
 
 
