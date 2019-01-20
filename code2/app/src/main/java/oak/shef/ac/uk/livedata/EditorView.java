@@ -45,20 +45,16 @@ import java.util.TimeZone;
 
 import oak.shef.ac.uk.livedata.database.PhotoData;
 
-public class EditorView extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener,
-		GoogleMap.OnMyLocationClickListener,
-		OnMapReadyCallback {
+public class EditorView extends AppCompatActivity {
 
 	private MyViewModel myViewModel;
 	private static final int MY_LOCATION_REQUEST_CODE = 1;
 	private LocationRequest mLocationRequest;
 	private FusedLocationProviderClient mFusedLocationClient;
-	private MapView mapView;
 	private int year, month, day, hour, minute;
 	private Button btnDate, btnTime;
 	private TextView edtTitle, edtDescription;
 	private final String dPattern = "dd/MM/yyyy", tPattern = "HH:mm";
-	private GoogleMap mMap;
 
 
 	@Override
@@ -122,53 +118,9 @@ public class EditorView extends AppCompatActivity implements GoogleMap.OnMyLocat
 			}
 		});
 
-		SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.edt_loc);
-		mapFragment.getMapAsync(this);
-	}
-	@Override
-	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-		if (requestCode == MY_LOCATION_REQUEST_CODE) {
-			if (permissions.length == 1 &&
-					permissions[0] == android.Manifest.permission.ACCESS_FINE_LOCATION &&
-					grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-				mMap.setMyLocationEnabled(true);
-			} else {
-				// Permission was denied. Display an error message.
-			}
-		}
-	}
-	@Override
-	public void onMapReady(GoogleMap map) {
-			mMap = map;
-
-			//Check location permission for sdk >= 23
-			if (Build.VERSION.SDK_INT >= 23) {
-
-				if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-						== PackageManager.PERMISSION_GRANTED) {
-					mMap.setMyLocationEnabled(true);
-				} else {
-					// Request permission.
-					ActivityCompat.requestPermissions(EditorView.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-							MY_LOCATION_REQUEST_CODE);
-					Log.i("EditorView", "restart app");
-				}
-			}
 	}
 
-	@Override
-	public void onMyLocationClick(@NonNull Location location) {
-		Toast.makeText(this, "Current location:\n" + location, Toast.LENGTH_LONG).show();
-	}
 
-	@Override
-	public boolean onMyLocationButtonClick() {
-		Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-		// Return false so that we don't consume the event and the default behavior still occurs
-		// (the camera animates to the user's current position).
-		return false;
-	}
 
 
 	@SuppressWarnings("deprecation")
@@ -251,7 +203,7 @@ public class EditorView extends AppCompatActivity implements GoogleMap.OnMyLocat
 				simpleDateFormat.setTimeZone(TimeZone.getDefault()); // Use phone's local timezone
 				try {
 					Date dateTime = simpleDateFormat.parse(btnDate.getText().toString() + " " + btnTime.getText().toString());
-					PhotoData toSave = new PhotoData(edtTitle.getText().toString(), edtDescription.getText().toString(), dateTime, mMap.getMyLocation().getLatitude(), mMap.getMyLocation().getLongitude());
+					PhotoData toSave = new PhotoData(edtTitle.getText().toString(), edtDescription.getText().toString(), dateTime, 0,0);
 
 					Log.i("EditorView", toSave.toString());
 				} catch (ParseException e) {
