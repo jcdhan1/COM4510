@@ -9,21 +9,27 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
+
+import java.util.List;
 
 @Dao
 public interface PhotoDAO {
     @Insert
-    void insertAll(PhotoData... photodata);
-
-    @Insert
     void insert(PhotoData photodata);
+
+    @Update
+    void update(PhotoData photoData);
 
     @Delete
     void delete(PhotoData photoData);
 
-    @Query("SELECT * FROM PhotoData ORDER BY title ASC")
-    LiveData<PhotoData> retrieveAllData();
+    @Query("DELETE FROM PhotoData")
+    void deleteAllPhotos();
 
-    @Delete
-    void deleteAll(PhotoData... photoData);
+    @Query("SELECT * FROM PhotoData ORDER BY title ASC")
+    LiveData<List<PhotoData>> getAllPhotos();
+
+    @Insert
+    void insertAllPhotos(PhotoData... photodatas);
 }

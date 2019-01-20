@@ -37,7 +37,6 @@ import oak.shef.ac.uk.assignment.database.PhotoData;
 
 public class EditorActivity extends AppCompatActivity {
 
-	private MyViewModel myViewModel;
 	private static final int MY_LOCATION_REQUEST_CODE = 1;
 	private LocationRequest mLocationRequest;
 	private FusedLocationProviderClient mFusedLocationClient;
@@ -71,27 +70,7 @@ public class EditorActivity extends AppCompatActivity {
 		showTime(hour, minute);
 
 
-		// Get a new or existing ViewModel from the ViewModelProvider.
-		myViewModel = ViewModelProviders.of(this).get(MyViewModel.class);
-		// Add an observer on the LiveData. The onChanged() method fires
-		// when the observed data changes and the activity is
-		// in the foreground.
 
-		myViewModel.getPhotoDataToDisplay().observe(this, new Observer<PhotoData>() {
-			@Override
-			public void onChanged(@Nullable final PhotoData newValue) {
-
-
-				//TODO: LiveData RecyclerView?
-
-                /*TextView tv= findViewById(R.id.textView);
-                // if database is empty
-                if (newValue==null)
-                    tv.setText("click button");
-                else
-                    tv.setText(newValue.getDescription());*/
-			}
-		});
 
 		//set date
 		btnDate.setOnClickListener(new View.OnClickListener() {

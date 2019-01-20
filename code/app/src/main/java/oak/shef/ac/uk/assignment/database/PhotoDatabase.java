@@ -1,31 +1,33 @@
-/*
- * Copyright (c) 2018. This code has been developed by Fabio Ciravegna, The University of Sheffield. All rights reserved. No part of this code can be used without the explicit written permission by the author
- */
-
 package oak.shef.ac.uk.assignment.database;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.annotation.NonNull;
+
+import java.io.File;
 
 @android.arch.persistence.room.Database(entities = {PhotoData.class}, version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class PhotoDatabase extends RoomDatabase {
     public abstract PhotoDAO photoDao();
 
-    // marking the instance as volatile to ensure atomic access to the variable
     private static volatile PhotoDatabase INSTANCE;
 
+    /**
+     * Only one instance is allowed at one time
+     * @param context
+     * @return
+     */
     public static PhotoDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (PhotoDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = android.arch.persistence.room.Room.databaseBuilder(context.getApplicationContext(),
                             PhotoDatabase.class, "photo_database")
-                            // Wipes and rebuilds instead of migrating if no Migration object.
-                            // Migration is not part of this codelab.
                             .fallbackToDestructiveMigration()
                             .addCallback(sRoomDatabaseCallback)
                             .build();
@@ -37,13 +39,15 @@ public abstract class PhotoDatabase extends RoomDatabase {
 
 
     /**
-     * Override the onOpen method to populate the database.
-     * For this sample, we clear the database every time it is created or opened.
-     *
-     * If you want to populate the database only when the database is created for the 1st time,
-     * override RoomDatabase.Callback()#onCreate
+     * Populate database with existing files in the device's PhotoApp folder.
      */
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
+        @Override
+        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+            super.onCreate(db);
+            new PopulateDbAsyncTask(INSTANCE).execute();
+        }
+
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
@@ -51,4 +55,23 @@ public abstract class PhotoDatabase extends RoomDatabase {
         }
     };
 
+    private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
+        private PhotoDAO photoDAO;
+
+        private PopulateDbAsyncTask(PhotoDatabase db) {
+            photoDAO = db.photoDao();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            File[] files_array;
+            files_array = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/PhotoApp").listFiles();
+            if (files_array!=null) {
+                for (File f : files_array) {
+                    photoDAO.insert(new PhotoData(f.getAbsolutePath()));
+                }
+            }
+            return null;
+        }
+    }
 }
