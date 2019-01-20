@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	tools:context="oak.shef.ac.uk.assignment.EditorView">
+
+	<com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:alignContent="stretch"
+		app:alignItems="stretch"
+		app:dividerDrawable="@drawable/divider"
+		app:flexWrap="wrap"
+		app:showDivider="beginning|middle|end">
+
+		<LinearLayout
+			android:layout_width="220dp"
+			android:layout_height="match_parent"
+			android:orientation="vertical"
+			app:layout_flexGrow="1">
+
+			<EditText
+				android:id="@+id/edt_title"
+				style="@style/Base.TextAppearance.AppCompat.Medium"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/titleWatermark"
+				android:inputType="text|textAutoCorrect|textAutoComplete"
+				android:maxLines="1"
+				android:singleLine="true" />
+
+			<EditText
+				android:id="@+id/edt_description"
+				style="@style/Base.TextAppearance.AppCompat.Medium"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/descriptionWatermark"
+				android:inputType="text|textAutoCorrect|textAutoComplete"
+				android:maxLines="1"
+				android:singleLine="true" />
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
+
+			<Button
+				android:id="@+id/btn_date"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerHorizontal="true"
+				android:onClick="setDate"
+				android:text="Set Date" />
+
+			<Button
+				android:id="@+id/btn_time"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerHorizontal="true"
+				android:onClick="setDate"
+				android:text="Set Time" />
+		</LinearLayout>
+	</com.google.android.flexbox.FlexboxLayout>
+
+</LinearLayout>

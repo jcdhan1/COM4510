@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">Photo Manager</string>
-    <string name="action_settings">Settings</string>
+	<string name="app_name">Photo App</string>
+	<string name="titleWatermark">Enter a title...</string>
+	<string name="saveText">Save</string>
+	<string name="descriptionWatermark">Enter a description...</string>
+	<string name="dateTimeLabel"><![CDATA[Date & Time]]></string>
+	<string name="action_settings">Settings</string>
 </resources>
