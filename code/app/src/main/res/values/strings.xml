@@ -5,4 +5,5 @@
 	<string name="descriptionWatermark">Enter a description...</string>
 	<string name="dateTimeLabel"><![CDATA[Date & Time]]></string>
 	<string name="action_settings">Settings</string>
+	<string name="enterText">Enter Gallery</string>
 </resources>

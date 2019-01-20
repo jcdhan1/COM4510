@@ -35,8 +35,6 @@ import pl.aprilapps.easyphotopicker.EasyImage;
 
 public class GalleryActivity extends AppCompatActivity {
 
-    private static final int REQUEST_READ_EXTERNAL_STORAGE = 2987;
-    private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 7829;
     private static final String TAG = "GalleryActivity";
 	private static final String PHOTOS_KEY = "easy_image_photos_list";
     private ArrayList<ImageElement> myPictureList = new ArrayList<>();
@@ -78,7 +76,6 @@ public class GalleryActivity extends AppCompatActivity {
         mAdapter= new ImageAdapter(myPictureList);
         mRecyclerView.setAdapter(mAdapter);
         // required by Android 6.0 +
-        checkPermissions(getApplicationContext());
 
         initEasyImage();
 
@@ -107,53 +104,6 @@ public class GalleryActivity extends AppCompatActivity {
 				.setAllowMultiplePickInGallery(true);
     }
 
-    private void checkPermissions(final Context context) {
-        int currentAPIVersion = Build.VERSION.SDK_INT;
-        if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    android.support.v7.app.AlertDialog.Builder alertBuilder = new android.support.v7.app.AlertDialog.Builder(context);
-                    alertBuilder.setCancelable(true);
-                    alertBuilder.setTitle("Permission necessary");
-                    alertBuilder.setMessage("External storage permission is necessary");
-                    alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE);
-                        }
-                    });
-                    android.support.v7.app.AlertDialog alert = alertBuilder.create();
-                    alert.show();
-
-                } else {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE);
-                }
-
-            }
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    android.support.v7.app.AlertDialog.Builder alertBuilder = new android.support.v7.app.AlertDialog.Builder(context);
-                    alertBuilder.setCancelable(true);
-                    alertBuilder.setTitle("Permission necessary");
-                    alertBuilder.setMessage("Writing external storage permission is necessary");
-                    alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE);
-                        }
-                    });
-                    android.support.v7.app.AlertDialog alert = alertBuilder.create();
-                    alert.show();
-
-                } else {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE);
-                }
-
-            }
-
-
-        }
-    }
 
 
 
@@ -168,7 +118,19 @@ public class GalleryActivity extends AppCompatActivity {
             public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
                 //Some error handling
                 e.printStackTrace();
-            }
+
+                if (checkCallingOrSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                	Log.e("Permission", "Can Write");
+				}
+				if (checkCallingOrSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+					Log.e("Permission", "Can Read");
+				}
+				if (checkCallingOrSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+					Log.e("Permission", "Camera");
+				}
+
+
+			}
 
             @Override
             public void onImagesPicked(List<File> imageFiles, EasyImage.ImageSource source, int type) {
