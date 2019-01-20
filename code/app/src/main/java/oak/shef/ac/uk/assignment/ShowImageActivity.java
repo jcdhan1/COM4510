@@ -27,8 +27,8 @@ public class ShowImageActivity extends AppCompatActivity {
                 ImageElement element= ImageAdapter.getItems().get(position);
                 if (element.getImage()!=-1) {
                     imageView.setImageResource(element.getImage());
-                } else if (element.getFile()!=null) {
-                    Bitmap myBitmap = BitmapFactory.decodeFile(element.getFile().getAbsolutePath());
+                } else if (element.getFilePath()!=null) {
+                    Bitmap myBitmap = BitmapFactory.decodeFile(element.getFilePath());
                     imageView.setImageBitmap(myBitmap);
                 }
             }

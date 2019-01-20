@@ -49,8 +49,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.View_Holder>
         if (holder!=null && items.get(position)!=null) {
             if (items.get(position).getImage() !=-1) {
                 holder.imageView.setImageResource(items.get(position).getImage());
-            } else if (items.get(position).getFile()!=null){
-                Bitmap myBitmap = BitmapFactory.decodeFile(items.get(position).getFile().getAbsolutePath());
+            } else if (items.get(position).getFilePath()!=null){
+                Bitmap myBitmap = BitmapFactory.decodeFile(items.get(position).getFilePath());
                 holder.imageView.setImageBitmap(myBitmap);
             }
             holder.itemView.setOnClickListener(new View.OnClickListener() {

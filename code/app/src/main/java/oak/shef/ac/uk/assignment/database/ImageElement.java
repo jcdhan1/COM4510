@@ -14,16 +14,16 @@ public  class ImageElement implements Parcelable {
 		this.image = image;
 	}
 
-	public File getFile() {
-		return file;
+	public String getFilePath() {
+		return filePath;
 	}
 
-	public void setFile(File file) {
-		this.file = file;
+	public void setFile(String filePath) {
+		this.filePath = filePath;
 	}
 
 	private int image=-1;
-	private  File file=null;
+	private String filePath=null;
 
 
 	public ImageElement(int image) {
@@ -31,12 +31,13 @@ public  class ImageElement implements Parcelable {
 
 	}
 
-	public ImageElement(File fileX) {
-		file= fileX;
+	public ImageElement(String fileP) {
+		filePath= fileP;
 	}
 
 	protected ImageElement(Parcel in) {
 		image = in.readInt();
+		filePath = in.readString();
 	}
 
 	@Override
@@ -47,6 +48,7 @@ public  class ImageElement implements Parcelable {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(image);
+		dest.writeString(filePath);
 	}
 
 	@SuppressWarnings("unused")

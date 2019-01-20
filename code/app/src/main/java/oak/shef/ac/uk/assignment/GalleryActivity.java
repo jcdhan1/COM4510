@@ -47,14 +47,14 @@ public class GalleryActivity extends AppCompatActivity {
 			files_array = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/PhotoApp").listFiles();
 			if (files_array!=null) {
 				for (File f : files_array) {
-					myPictureList.add(new ImageElement(f));
+					myPictureList.add(new ImageElement(f.getAbsolutePath()));
 				}
 			}
 		}
 		if (savedInstanceState != null) {
 			myPictureList = savedInstanceState.getParcelableArrayList(PHOTOS_KEY);
 			for (ImageElement img : myPictureList) {
-				Log.i("all paths", img.getFile().getAbsolutePath());
+				Log.i("all paths", img.getFilePath());
 			}
 		}
         setContentView(R.layout.activity_gallery);
@@ -153,7 +153,7 @@ public class GalleryActivity extends AppCompatActivity {
     private List<ImageElement> getImageElements(List<File> returnedPhotos) {
         List<ImageElement> imageElementList= new ArrayList<>();
         for (File file: returnedPhotos){
-            ImageElement element= new ImageElement(file);
+            ImageElement element= new ImageElement(file.getAbsolutePath());
             imageElementList.add(element);
         }
         return imageElementList;
