@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import oak.shef.ac.uk.assignment.database.ImageElement;
 
 import java.util.List;
 
@@ -46,10 +47,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.View_Holder>
         //Use the provided View Holder on the onCreateViewHolder method to populate the
         // current row on the RecyclerView
         if (holder!=null && items.get(position)!=null) {
-            if (items.get(position).image!=-1) {
-                holder.imageView.setImageResource(items.get(position).image);
-            } else if (items.get(position).file!=null){
-                Bitmap myBitmap = BitmapFactory.decodeFile(items.get(position).file.getAbsolutePath());
+            if (items.get(position).getImage() !=-1) {
+                holder.imageView.setImageResource(items.get(position).getImage());
+            } else if (items.get(position).getFile()!=null){
+                Bitmap myBitmap = BitmapFactory.decodeFile(items.get(position).getFile().getAbsolutePath());
                 holder.imageView.setImageBitmap(myBitmap);
             }
             holder.itemView.setOnClickListener(new View.OnClickListener() {

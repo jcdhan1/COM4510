@@ -7,18 +7,12 @@
 package oak.shef.ac.uk.assignment;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import oak.shef.ac.uk.assignment.database.ImageElement;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
@@ -59,7 +54,7 @@ public class GalleryActivity extends AppCompatActivity {
 		if (savedInstanceState != null) {
 			myPictureList = savedInstanceState.getParcelableArrayList(PHOTOS_KEY);
 			for (ImageElement img : myPictureList) {
-				Log.i("all paths", img.file.getAbsolutePath());
+				Log.i("all paths", img.getFile().getAbsolutePath());
 			}
 		}
         setContentView(R.layout.activity_gallery);

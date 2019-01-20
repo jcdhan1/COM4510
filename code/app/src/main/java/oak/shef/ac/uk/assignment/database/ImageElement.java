@@ -1,13 +1,29 @@
-package oak.shef.ac.uk.assignment;
+package oak.shef.ac.uk.assignment.database;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.File;
 
-class ImageElement implements Parcelable {
-	int image=-1;
-	File file=null;
+public  class ImageElement implements Parcelable {
+	public int getImage() {
+		return image;
+	}
+
+	public void setImage(int image) {
+		this.image = image;
+	}
+
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+	}
+
+	private int image=-1;
+	private  File file=null;
 
 
 	public ImageElement(int image) {
