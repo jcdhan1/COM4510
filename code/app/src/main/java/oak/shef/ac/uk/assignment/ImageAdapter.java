@@ -48,12 +48,16 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
 				@Override
 				public void onClick(View v) {
 					Log.i("ImageAdapter", photos.get(position).toString());
-					Intent intent = new Intent(context, EditorActivity.class);
-					intent.putExtra("position", position);
+
+					//Intent intent = new Intent(context, EditorActivity.class);
+					Intent intent = new Intent (context, ShowActivity.class);
+					intent.putExtra("position",position);
 					intent.putExtra("id", photos.get(position).getId());
+
 					if (context instanceof GalleryActivity) {
-						((GalleryActivity) context).startActivityForResult(intent, GalleryActivity.UPDATE_REQUEST);
+						((GalleryActivity) context).startActivityForResult(intent, GalleryActivity.SHOW_REQUEST);
 					}
+
 				}
 			});
 		}

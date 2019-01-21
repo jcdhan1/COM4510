@@ -6,4 +6,6 @@
 	<string name="dateTimeLabel"><![CDATA[Date & Time]]></string>
 	<string name="action_settings">Settings</string>
 	<string name="enterText">Enter Gallery</string>
+
+	<string name="title_activity_show">ShowActivity</string>
 </resources>

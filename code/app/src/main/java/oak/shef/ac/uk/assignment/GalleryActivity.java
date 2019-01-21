@@ -4,8 +4,11 @@ import android.Manifest;
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.ContactsContract;
@@ -20,6 +23,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +40,7 @@ import static android.content.Intent.EXTRA_TITLE;
 
 public class GalleryActivity extends AppCompatActivity {
 
-	public static final int UPDATE_REQUEST = 42;
+	public static final int SHOW_REQUEST = 42;
 	private ImageAdapter mAdapter;
 	private RecyclerView mRecyclerView;
 	private PhotoViewModel photoViewModel;
@@ -142,31 +146,52 @@ public class GalleryActivity extends AppCompatActivity {
 			}
 		});
 
-		//Update from EditorActivity
-		if (requestCode == UPDATE_REQUEST) {
-			if (resultCode == RESULT_OK) {
-				PhotoData pD = new PhotoData(data.getStringExtra("filePath"));
-				pD.setId(data.getIntExtra("id", -1));
-				pD.setTitle(data.getStringExtra(EXTRA_TITLE));
-				pD.setDescription(data.getStringExtra(EXTRA_TEXT));
-				SimpleDateFormat simpleDateFormat = new SimpleDateFormat(EditorActivity.dPattern + " " + EditorActivity.tPattern);
-				simpleDateFormat.setTimeZone(TimeZone.getDefault()); // Use phone's local timezone
-				try {
-					Date dateTime = simpleDateFormat.parse(data.getStringExtra("dateTimeString"));
-					pD.setDateTime(dateTime);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-				photoViewModel.update(pD);
+		//Results from ShowActivity
+		if (requestCode == SHOW_REQUEST) {
+			PhotoData pD;
+			switch (resultCode) {
+				case RESULT_OK:
+					pD = new PhotoData(data.getStringExtra("filePath"));
+					pD.setId(data.getIntExtra("id", -1));
+					pD.setTitle(data.getStringExtra(EXTRA_TITLE));
+					pD.setDescription(data.getStringExtra(EXTRA_TEXT));
+					SimpleDateFormat simpleDateFormat = new SimpleDateFormat(EditorActivity.dPattern + " " + EditorActivity.tPattern);
+					simpleDateFormat.setTimeZone(TimeZone.getDefault()); // Use phone's local timezone
+					try {
+						Date dateTime = simpleDateFormat.parse(data.getStringExtra("dateTimeString"));
+						pD.setDateTime(dateTime);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					photoViewModel.update(pD);
 
 
-				Toast.makeText(this, "Data saved", Toast.LENGTH_SHORT).show();
-			} else {
-				Toast.makeText(this, "Data not saved", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, "Data saved", Toast.LENGTH_SHORT).show();
+				case ShowActivity.RESULT_DELETE:
+					String fP = data.getStringExtra("filePath");
+					pD = new PhotoData(data.getStringExtra(fP));
+					pD.setId(data.getIntExtra("id", -1));
+					final File toDelete = new File(fP);
+					try {
+						MediaScannerConnection.scanFile(GalleryActivity.this, new String[] { fP }, null,
+						new MediaScannerConnection.OnScanCompletedListener(){
+							@Override
+							public void onScanCompleted(String path, Uri uri) {
+								if (uri != null) {
+									GalleryActivity.this.getContentResolver().delete(uri, null,
+											null);
+								}
+								toDelete.delete();
+							}
+						});
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					photoViewModel.delete(pD);
 			}
 		}
-	}
 
+	}
 
 	/**
 	 * add to the grid
@@ -176,28 +201,14 @@ public class GalleryActivity extends AppCompatActivity {
 	private void onPhotosReturned(List<File> returnedFiles) {
 		if (returnedFiles != null) {
 			for (File f : returnedFiles) {
-				PhotoData pD = new PhotoData(f.getAbsolutePath());
+				String fP = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/PhotoApp/" + f.getName();
+				PhotoData pD = new PhotoData(fP);
 				pD.setTitle(f.getName());
 				photoViewModel.insert(pD);
 			}
 			mAdapter.notifyDataSetChanged();
 			mRecyclerView.scrollToPosition(returnedFiles.size() - 1);
 		}
-	}
-
-	/**
-	 * given a list of photos, it creates a list of myElements
-	 *
-	 * @param returnedPhotos
-	 * @return
-	 */
-	private List<PhotoData> getPhotoDatas(List<File> returnedPhotos) {
-		List<PhotoData> PhotoDataList = new ArrayList<>();
-		for (File file : returnedPhotos) {
-			PhotoData element = new PhotoData(file.getAbsolutePath());
-			PhotoDataList.add(element);
-		}
-		return PhotoDataList;
 	}
 
 	public Activity getActivity() {

@@ -157,6 +157,8 @@ public class PhotoData implements Parcelable {
 			}
 		} catch (IOException e) {
 
+		} catch (IllegalArgumentException f) {
+
 		}
 	}
 

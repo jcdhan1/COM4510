@@ -3,8 +3,6 @@ package oak.shef.ac.uk.assignment;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,15 +21,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.location.LocationRequest;
-
-import com.google.android.gms.location.FusedLocationProviderClient;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
 import oak.shef.ac.uk.assignment.database.PhotoData;
 
@@ -55,7 +46,7 @@ public class EditorActivity extends AppCompatActivity {
 		if (b != null) {
 			position = b.getInt("position");
 			if (position != -1) {
-				ImageView imageView = (ImageView) findViewById(R.id.image);
+				ImageView imageView = (ImageView) findViewById(R.id.img_preview);
 				edtTitle = (TextView) findViewById(R.id.edt_title);
 				edtDescription = (TextView) findViewById(R.id.edt_description);
 				btnDate = (Button) findViewById(R.id.btn_date);
