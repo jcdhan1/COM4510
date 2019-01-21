@@ -10,8 +10,10 @@ import android.support.media.ExifInterface;
 import android.util.Log;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 @Entity(indices = {@Index(value = {"title"})})
@@ -209,6 +211,39 @@ public class PhotoData implements Parcelable {
 			return exifInterface;
 		} catch (IOException e) {
 			return null;
+		}
+	}
+
+	public String getAllExif(){
+		ExifInterface eI=this.getExif();
+
+		if (eI!=null) {
+			Class<ExifInterface> eIc= ExifInterface.class;
+			Field[] arr = eIc.getFields();
+			//Get all Exif strings
+			ArrayList<String> tags = new ArrayList<String>();
+			for (Field f : arr) {
+				if (f.getType().equals(String.class)) {
+					try {
+						String s = (String) f.get(null);
+						tags.add(s);
+					} catch (IllegalAccessException e) {
+
+					}
+				}
+
+			}
+			StringBuilder sB = new StringBuilder();
+			for (String tag : tags) {
+				sB.append(tag);
+				sB.append(": ");
+				String val = eI.getAttribute(tag);
+				sB.append(val!=null ? val : "");
+				sB.append("\n");
+			}
+			return sB.toString();
+		} else {
+			return "";
 		}
 	}
 

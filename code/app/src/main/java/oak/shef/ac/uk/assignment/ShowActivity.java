@@ -7,10 +7,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.media.ExifInterface;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -158,6 +160,19 @@ public class ShowActivity extends AppCompatActivity {
 
 				TextView txtData = (TextView) findViewById(R.id.txt_data);
 				txtData.setText(element.toString());
+				final String allExif = element.getAllExif();
+				Button btnExif = findViewById(R.id.btn_exif);
+				btnExif.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Log.i("ShowActivity", "Showing Exif data");
+						new AlertDialog.Builder(ShowActivity.this)
+								.setTitle("Showing Exif Data")
+								.setMessage(allExif)
+								.setIcon(android.R.drawable.ic_dialog_alert)
+								.setPositiveButton(android.R.string.ok, null).show();
+					}
+				});
 
 				Button btnDelete = (Button) findViewById(R.id.btn_delete);
 				btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +181,7 @@ public class ShowActivity extends AppCompatActivity {
 						new AlertDialog.Builder(ShowActivity.this)
 								.setTitle("Deletion")
 								.setMessage("Do you really want to delete this image?")
-								.setIcon(android.R.drawable.ic_dialog_alert)
+								.setIcon(android.R.drawable.ic_dialog_info)
 								.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
 									public void onClick(DialogInterface dialog, int whichButton) {
