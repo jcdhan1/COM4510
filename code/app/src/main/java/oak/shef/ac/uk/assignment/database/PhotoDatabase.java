@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.io.File;
 
@@ -68,7 +69,10 @@ public abstract class PhotoDatabase extends RoomDatabase {
             files_array = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/PhotoApp").listFiles();
             if (files_array!=null) {
                 for (File f : files_array) {
-                    photoDAO.insert(new PhotoData(f.getAbsolutePath()));
+                    PhotoData pD=new PhotoData(f.getAbsolutePath());
+                    pD.setTitle(f.getName());
+                    Log.i("PhotoDatabase", pD.toString());
+                    photoDAO.insert(pD);
                 }
             }
             return null;

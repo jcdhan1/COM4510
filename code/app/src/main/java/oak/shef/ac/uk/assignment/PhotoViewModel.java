@@ -11,31 +11,32 @@ import oak.shef.ac.uk.assignment.database.PhotoData;
 
 
 public class PhotoViewModel extends AndroidViewModel {
-    private PhotoRepository repository;
-    private LiveData<List<PhotoData>> allPhotos;
-    public PhotoViewModel(@NonNull Application application) {
-        super(application);
-        repository = new PhotoRepository(application);
-        allPhotos = repository.getAllPhotos();
-    }
+	private PhotoRepository repository;
+	private LiveData<List<PhotoData>> allPhotos;
 
-    public void insert(PhotoData photoData) {
-        repository.insert(photoData);
-    }
+	public PhotoViewModel(@NonNull Application application) {
+		super(application);
+		repository = new PhotoRepository(application);
+		allPhotos = repository.getAllPhotos();
+	}
 
-    public void update(PhotoData photoData) {
-        repository.update(photoData);
-    }
+	public void insert(PhotoData photoData) {
+		repository.insert(photoData);
+	}
 
-    public void delete(PhotoData photoData) {
-        repository.delete(photoData);
-    }
+	public void update(PhotoData photoData) {
+		repository.update(photoData);
+	}
 
-    public void deleteAllPhotos() {
-        repository.deleteAllPhotos();
-    }
+	public void delete(PhotoData photoData) {
+		repository.delete(photoData);
+	}
 
-    public LiveData<List<PhotoData>> getAllPhotos() {
-        return allPhotos;
-    }
+	public void deleteAllPhotos() {
+		repository.deleteAllPhotos();
+	}
+
+	public LiveData<List<PhotoData>> getAllPhotos() {
+		return allPhotos;
+	}
 }

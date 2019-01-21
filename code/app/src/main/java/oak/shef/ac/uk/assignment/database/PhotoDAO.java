@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2018. This code has been developed by Fabio Ciravegna, The University of Sheffield. All rights reserved. No part of this code can be used without the explicit written permission by the author
- */
-
 package oak.shef.ac.uk.assignment.database;
 
 import android.arch.lifecycle.LiveData;
@@ -15,21 +11,21 @@ import java.util.List;
 
 @Dao
 public interface PhotoDAO {
-    @Insert
-    void insert(PhotoData photodata);
+	@Insert
+	void insert(PhotoData photodata);
 
-    @Update
-    void update(PhotoData photoData);
+	@Update
+	void update(PhotoData photoData);
 
-    @Delete
-    void delete(PhotoData photoData);
+	@Delete
+	void delete(PhotoData photoData);
 
-    @Query("DELETE FROM PhotoData")
-    void deleteAllPhotos();
+	@Query("DELETE FROM PhotoData")
+	void deleteAllPhotos();
 
-    @Query("SELECT * FROM PhotoData ORDER BY title ASC")
-    LiveData<List<PhotoData>> getAllPhotos();
+	@Query("SELECT * FROM PhotoData ORDER BY title ASC")
+	LiveData<List<PhotoData>> getAllPhotos();
 
-    @Insert
-    void insertAllPhotos(PhotoData... photodatas);
+	@Insert
+	void insertAllPhotos(PhotoData... photodatas);
 }

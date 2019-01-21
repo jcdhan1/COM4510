@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2018. This code has been developed by Fabio Ciravegna, The University of Sheffield. All rights reserved. No part of this code can be used without the explicit written permission by the author
- */
-
 package oak.shef.ac.uk.assignment.database;
 
 import android.arch.persistence.room.Entity;
@@ -131,29 +127,36 @@ public class PhotoData implements Parcelable {
 		this.filePath = filePath;
 		this.title = "";
 		this.description = "";
-		ExifInterface exifInterface = getExif();
-		if (exifInterface != null) {
-			this.description = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION);
-			if (exifInterface.getLatLong()!=null) {
-				this.lat = exifInterface.getLatLong()[0];
-				this.lng = exifInterface.getLatLong()[1];
-			}
-			SimpleDateFormat fmt_Exif = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
-			String dateString = "";
-			if (exifInterface.getAttribute(ExifInterface.TAG_DATETIME)!=null){
-				dateString=exifInterface.getAttribute(ExifInterface.TAG_DATETIME);
-			}
-			if (exifInterface.getAttribute(ExifInterface.TAG_DATETIME_DIGITIZED)!=null){
-				dateString=exifInterface.getAttribute(ExifInterface.TAG_DATETIME_DIGITIZED);
-			}
-			if (exifInterface.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL)!=null){
-				dateString=exifInterface.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL);
-			}
-			try {
-				this.dateTime = fmt_Exif.parse(dateString);
-			} catch (ParseException e) {
 
+		ExifInterface exifInterface;
+		try {
+			exifInterface = new ExifInterface(this.filePath);
+
+			if (exifInterface != null) {
+				this.description = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION);
+				if (exifInterface.getLatLong() != null) {
+					this.lat = exifInterface.getLatLong()[0];
+					this.lng = exifInterface.getLatLong()[1];
+				}
+				SimpleDateFormat fmt_Exif = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
+				String dateString = "";
+				if (exifInterface.getAttribute(ExifInterface.TAG_DATETIME) != null) {
+					dateString = exifInterface.getAttribute(ExifInterface.TAG_DATETIME);
+				}
+				if (exifInterface.getAttribute(ExifInterface.TAG_DATETIME_DIGITIZED) != null) {
+					dateString = exifInterface.getAttribute(ExifInterface.TAG_DATETIME_DIGITIZED);
+				}
+				if (exifInterface.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL) != null) {
+					dateString = exifInterface.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL);
+				}
+				try {
+					this.dateTime = fmt_Exif.parse(dateString);
+				} catch (ParseException e) {
+
+				}
 			}
+		} catch (IOException e) {
+
 		}
 	}
 
@@ -209,6 +212,6 @@ public class PhotoData implements Parcelable {
 
 	@Override
 	public String toString() {
-		return String.format("Title: %s\nDescription: %s\n%s\n(%s, %s)", this.title, this.description, this.dateTime.toString(), this.lat, this.lng);
+		return String.format("Title: %s\nDescription: %s\n%s\n(%s, %s)", this.title, this.description, (this.dateTime != null ? this.dateTime.toString() : ""), this.lat, this.lng);
 	}
 }

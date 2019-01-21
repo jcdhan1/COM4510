@@ -1,9 +1,3 @@
-/*
- * Copyright (c) 2017. This code has been developed by Fabio Ciravegna, The University of Sheffield. All rights reserved. No part of this code can be used without the explicit written permission by the author
- *
- * some inspiration taken from https://stackoverflow.com/questions/40587168/simple-android-grid-example-using-recyclerview-with-gridlayoutmanager-like-the
- */
-
 package oak.shef.ac.uk.assignment;
 
 import android.Manifest;
@@ -14,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -25,17 +20,23 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import oak.shef.ac.uk.assignment.database.PhotoData;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
+import static android.content.Intent.EXTRA_TEXT;
+import static android.content.Intent.EXTRA_TITLE;
+
 public class GalleryActivity extends AppCompatActivity {
 
-	private static final String TAG = "GalleryActivity";
-	private static final String PHOTOS_KEY = "easy_image_photos_list";
+	public static final int UPDATE_REQUEST = 42;
 	private ImageAdapter mAdapter;
 	private RecyclerView mRecyclerView;
 	private PhotoViewModel photoViewModel;
@@ -105,9 +106,13 @@ public class GalleryActivity extends AppCompatActivity {
 
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	protected void onActivityResult(final int requestCode, final int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
+		//Camera request: 9068
+		//Storage request: 4972
+
+		//Insert from device gallery or camea
 		EasyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
 			@Override
 			public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
@@ -129,9 +134,37 @@ public class GalleryActivity extends AppCompatActivity {
 
 			@Override
 			public void onImagesPicked(List<File> imageFiles, EasyImage.ImageSource source, int type) {
+				Log.i("Image Insertion", String.format("Request %s\nResult %s", requestCode, resultCode));
+
+				//TODO: Depending on the device, EasyImage might not record Exif location data when it uses the camera even if location services are allowed. Add coordinates if photo taken via the camera has no coordinates.
+
 				onPhotosReturned(imageFiles);
 			}
 		});
+
+		//Update from EditorActivity
+		if (requestCode == UPDATE_REQUEST) {
+			if (resultCode == RESULT_OK) {
+				PhotoData pD = new PhotoData(data.getStringExtra("filePath"));
+				pD.setId(data.getIntExtra("id", -1));
+				pD.setTitle(data.getStringExtra(EXTRA_TITLE));
+				pD.setDescription(data.getStringExtra(EXTRA_TEXT));
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat(EditorActivity.dPattern + " " + EditorActivity.tPattern);
+				simpleDateFormat.setTimeZone(TimeZone.getDefault()); // Use phone's local timezone
+				try {
+					Date dateTime = simpleDateFormat.parse(data.getStringExtra("dateTimeString"));
+					pD.setDateTime(dateTime);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				photoViewModel.update(pD);
+
+
+				Toast.makeText(this, "Data saved", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(this, "Data not saved", Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 
 
@@ -143,7 +176,9 @@ public class GalleryActivity extends AppCompatActivity {
 	private void onPhotosReturned(List<File> returnedFiles) {
 		if (returnedFiles != null) {
 			for (File f : returnedFiles) {
-				photoViewModel.insert(new PhotoData(f.getAbsolutePath()));
+				PhotoData pD = new PhotoData(f.getAbsolutePath());
+				pD.setTitle(f.getName());
+				photoViewModel.insert(pD);
 			}
 			mAdapter.notifyDataSetChanged();
 			mRecyclerView.scrollToPosition(returnedFiles.size() - 1);

@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2017. This code has been developed by Fabio Ciravegna, The University of Sheffield. All rights reserved. No part of this code can be used without the explicit written permission by the author
- */
-
 package oak.shef.ac.uk.assignment;
 
 import android.content.Context;
@@ -10,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,9 +47,13 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
 			holder.itemView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(context, ShowImageActivity.class);
+					Log.i("ImageAdapter", photos.get(position).toString());
+					Intent intent = new Intent(context, EditorActivity.class);
 					intent.putExtra("position", position);
-					context.startActivity(intent);
+					intent.putExtra("id", photos.get(position).getId());
+					if (context instanceof GalleryActivity) {
+						((GalleryActivity) context).startActivityForResult(intent, GalleryActivity.UPDATE_REQUEST);
+					}
 				}
 			});
 		}

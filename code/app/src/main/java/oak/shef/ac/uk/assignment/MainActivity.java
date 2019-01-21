@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 	private static final int REQUEST_READ_EXTERNAL_STORAGE = 2987;
 	private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 7829;
 	private static final int REQUEST_CAMERA = 5345;
+	private static final int REQUEST_ACCESS_FINE_LOCATION = 6876;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,16 +41,20 @@ public class MainActivity extends AppCompatActivity {
 			}
 		});
 	}
-	private String p(int requestCode){
+
+	private String p(int requestCode) {
 		switch (requestCode) {
 			case REQUEST_WRITE_EXTERNAL_STORAGE:
 				return Manifest.permission.WRITE_EXTERNAL_STORAGE;
 			case REQUEST_CAMERA:
-				return  Manifest.permission.CAMERA;
+				return Manifest.permission.CAMERA;
+			case REQUEST_ACCESS_FINE_LOCATION:
+				return Manifest.permission.ACCESS_FINE_LOCATION;
 			default:
 				return Manifest.permission.READ_EXTERNAL_STORAGE;
 		}
 	}
+
 	private void checkPermissions(final Context context, final int requestCode) {
 
 		int currentAPIVersion = Build.VERSION.SDK_INT;
@@ -77,13 +82,16 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 	}
+
 	@Override
 	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-		super.onRequestPermissionsResult(requestCode,permissions,grantResults);
-		if (requestCode==REQUEST_READ_EXTERNAL_STORAGE) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if (requestCode == REQUEST_READ_EXTERNAL_STORAGE) {
 			checkPermissions(MainActivity.this, REQUEST_WRITE_EXTERNAL_STORAGE);
-		} else if(requestCode==REQUEST_WRITE_EXTERNAL_STORAGE) {
+		} else if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE) {
 			checkPermissions(MainActivity.this, REQUEST_CAMERA);
+		} else if (requestCode == REQUEST_CAMERA) {
+			checkPermissions(MainActivity.this, REQUEST_ACCESS_FINE_LOCATION);
 		} else {
 			Log.i("Permissions", "all enabled");
 		}

@@ -3,8 +3,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical"
-	tools:context="oak.shef.ac.uk.assignment.EditorActivity">
+	android:orientation="vertical">
 
 	<com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -64,6 +63,11 @@
 				android:onClick="setDate"
 				android:text="Set Time" />
 		</LinearLayout>
+
+		<ImageView
+			android:id="@+id/image"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent" />
 	</com.google.android.flexbox.FlexboxLayout>
 
 </LinearLayout>

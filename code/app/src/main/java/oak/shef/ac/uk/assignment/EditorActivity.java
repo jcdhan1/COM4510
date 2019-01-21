@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2018. This code has been developed by Fabio Ciravegna, The University of Sheffield. All rights reserved. No part of this code can be used without the explicit written permission by the author
- */
-
 package oak.shef.ac.uk.assignment;
 
 import android.app.DatePickerDialog;
@@ -9,6 +5,9 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -37,13 +37,11 @@ import oak.shef.ac.uk.assignment.database.PhotoData;
 
 public class EditorActivity extends AppCompatActivity {
 
-	private static final int MY_LOCATION_REQUEST_CODE = 1;
-	private LocationRequest mLocationRequest;
-	private FusedLocationProviderClient mFusedLocationClient;
 	private int year, month, day, hour, minute;
 	private Button btnDate, btnTime;
 	private TextView edtTitle, edtDescription;
-	private final String dPattern = "dd/MM/yyyy", tPattern = "HH:mm";
+	private String filePath;
+	public static final String dPattern = "dd/MM/yyyy", tPattern = "HH:mm";
 
 
 	@Override
@@ -52,44 +50,62 @@ public class EditorActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_editor);
 
 
+		Bundle b = getIntent().getExtras();
+		int position = -1;
+		if (b != null) {
+			position = b.getInt("position");
+			if (position != -1) {
+				ImageView imageView = (ImageView) findViewById(R.id.image);
+				edtTitle = (TextView) findViewById(R.id.edt_title);
+				edtDescription = (TextView) findViewById(R.id.edt_description);
+				btnDate = (Button) findViewById(R.id.btn_date);
+				btnTime = (Button) findViewById(R.id.btn_time);
 
 
-		edtTitle = (TextView) findViewById(R.id.edt_title);
-		edtDescription = (TextView) findViewById(R.id.edt_description);
+				PhotoData element = ImageAdapter.getPhotos().get(position);
+				if (element.getImage() != -1) {
+					imageView.setImageResource(element.getImage());
+				} else if (element.getFilePath() != null) {
+					filePath = element.getFilePath();
+					Bitmap myBitmap = BitmapFactory.decodeFile(filePath);
+					imageView.setImageBitmap(myBitmap);
+				}
+				edtTitle.setText(element.getTitle());
+				edtDescription.setText(element.getDescription());
 
-		btnDate = (Button) findViewById(R.id.btn_date);
-		btnTime = (Button) findViewById(R.id.btn_time);
-		Calendar calendar = Calendar.getInstance();
-		year = calendar.get(Calendar.YEAR);
-
-		month = calendar.get(Calendar.MONTH);
-		day = calendar.get(Calendar.DAY_OF_MONTH);
-		showDate(year, month + 1, day);
-		hour = calendar.get(Calendar.HOUR_OF_DAY);
-		minute = calendar.get(Calendar.MINUTE);
-		showTime(hour, minute);
-
-
-
-
-		//set date
-		btnDate.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				setDate(v);
+				Calendar calendar = Calendar.getInstance();
+				if (element.getDateTime() != null) {
+					calendar.setTime(element.getDateTime());
+				} else {
+					Log.i("EditorActivity", "No dateTime");
+				}
+				year = calendar.get(Calendar.YEAR);
+				month = calendar.get(Calendar.MONTH);
+				day = calendar.get(Calendar.DAY_OF_MONTH);
+				showDate(year, month + 1, day);
+				hour = calendar.get(Calendar.HOUR_OF_DAY);
+				minute = calendar.get(Calendar.MINUTE);
+				showTime(hour, minute);
+				//set date
+				btnDate.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						setDate(v);
+					}
+				});
+				//set time
+				btnTime.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						setTime(v);
+					}
+				});
 			}
-		});
-		//set time
-		btnTime.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				setTime(v);
-			}
-		});
+
+		}
+
 
 	}
-
-
 
 
 	@SuppressWarnings("deprecation")
@@ -168,17 +184,20 @@ public class EditorActivity extends AppCompatActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.btn_save: //Save button
-				SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dPattern + " " + tPattern);
-				simpleDateFormat.setTimeZone(TimeZone.getDefault()); // Use phone's local timezone
-				try {
-					Date dateTime = simpleDateFormat.parse(btnDate.getText().toString() + " " + btnTime.getText().toString());
-					PhotoData toSave = new PhotoData(edtTitle.getText().toString(), edtDescription.getText().toString(), "", dateTime, 0,0);
+				Intent data = new Intent();
 
-					Log.i("EditorActivity", toSave.toString());
-				} catch (ParseException e) {
-					e.printStackTrace();
+
+				data.putExtra(Intent.EXTRA_TITLE, edtTitle.getText().toString());
+				data.putExtra(Intent.EXTRA_TEXT, edtDescription.getText().toString());
+				data.putExtra("dateTimeString", btnDate.getText().toString() + " " + btnTime.getText().toString());
+				data.putExtra("filePath", filePath);
+				int id = getIntent().getIntExtra("id", -1);
+				if (id != -1) {
+					data.putExtra("id", id);
 				}
 
+				setResult(RESULT_OK, data);
+				finish();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
