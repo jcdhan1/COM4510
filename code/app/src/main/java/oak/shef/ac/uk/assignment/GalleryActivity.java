@@ -7,6 +7,9 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import android.os.Environment;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.media.ExifInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,11 +26,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -34,11 +40,14 @@ import java.util.TimeZone;
 import oak.shef.ac.uk.assignment.database.PhotoData;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
+import pl.aprilapps.easyphotopicker.EasyImageConfiguration;
 
 import static android.content.Intent.EXTRA_TEXT;
 import static android.content.Intent.EXTRA_TITLE;
 
-public class GalleryActivity extends AppCompatActivity {
+public class GalleryActivity extends AppCompatActivity implements LocationListener {
+	LocationManager mLocationManager;
+
 
 	public static final int SHOW_REQUEST = 42;
 	private ImageAdapter mAdapter;
@@ -58,6 +67,8 @@ public class GalleryActivity extends AppCompatActivity {
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+		mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
 
 		activity = this;
 
@@ -140,9 +151,8 @@ public class GalleryActivity extends AppCompatActivity {
 			public void onImagesPicked(List<File> imageFiles, EasyImage.ImageSource source, int type) {
 				Log.i("Image Insertion", String.format("Request %s\nResult %s", requestCode, resultCode));
 
-				//TODO: Depending on the device, EasyImage might not record Exif location data when it uses the camera even if location services are allowed. Add coordinates if photo taken via the camera has no coordinates.
 
-				onPhotosReturned(imageFiles);
+				onPhotosReturned(imageFiles, source);
 			}
 		});
 
@@ -177,17 +187,17 @@ public class GalleryActivity extends AppCompatActivity {
 					pD.setId(data.getIntExtra("id", -1));
 					final File toDelete = new File(fP);
 					try {
-						MediaScannerConnection.scanFile(GalleryActivity.this, new String[] { fP }, null,
-						new MediaScannerConnection.OnScanCompletedListener(){
-							@Override
-							public void onScanCompleted(String path, Uri uri) {
-								if (uri != null) {
-									GalleryActivity.this.getContentResolver().delete(uri, null,
-											null);
-								}
-								toDelete.delete();
-							}
-						});
+						MediaScannerConnection.scanFile(GalleryActivity.this, new String[]{fP}, null,
+								new MediaScannerConnection.OnScanCompletedListener() {
+									@Override
+									public void onScanCompleted(String path, Uri uri) {
+										if (uri != null) {
+											GalleryActivity.this.getContentResolver().delete(uri, null,
+													null);
+										}
+										toDelete.delete();
+									}
+								});
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -207,17 +217,48 @@ public class GalleryActivity extends AppCompatActivity {
 	 *
 	 * @param returnedFiles
 	 */
-	private void onPhotosReturned(List<File> returnedFiles) {
+	private void onPhotosReturned(List<File> returnedFiles, EasyImage.ImageSource source) {
 		if (returnedFiles != null) {
 			for (File f : returnedFiles) {
 				String fP = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/PhotoApp/" + f.getName();
 				PhotoData pD = new PhotoData(fP);
 				pD.setTitle(f.getName());
+
+				//Depending on the device (e.g. unnecessary on Huawei P10) the camera may or may not save location data and time in the Exif data.
+				if (source == EasyImage.ImageSource.CAMERA) {
+					if (pD.getDateTime() == null) {
+						Calendar c = Calendar.getInstance();
+						pD.setDateTime(c.getTime());
+					}
+					if (pD.getExif() != null) {
+						if (pD.getExif().getLatLong() == null) {
+							Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+							pD.setLat(location.getLatitude());
+							pD.setLng(location.getLongitude());
+						}
+					}
+				}
 				photoViewModel.insert(pD);
 			}
 			mAdapter.notifyDataSetChanged();
 			mRecyclerView.scrollToPosition(returnedFiles.size() - 1);
 		}
+	}
+
+	public void onLocationChanged(Location location) {
+		if (location != null) {
+			Log.v("Location Changed", location.getLatitude() + " and " + location.getLongitude());
+			mLocationManager.removeUpdates(this);
+		}
+	}
+
+	public void onProviderDisabled(String arg0) {
+	}
+
+	public void onProviderEnabled(String arg0) {
+	}
+
+	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
 	}
 
 	public Activity getActivity() {

@@ -5,19 +5,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import oak.shef.ac.uk.assignment.database.PhotoData;
 
@@ -256,8 +254,6 @@ public class ShowActivity extends AppCompatActivity {
 		if (requestCode == UPDATE_REQUEST && resultCode == RESULT_OK) {
 			setResult(RESULT_OK, data);
 			ShowActivity.this.finish();
-		} else {
-			Log.i("ShowActivity", "Nothing happened");
 		}
 	}
 }
