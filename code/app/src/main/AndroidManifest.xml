@@ -33,7 +33,11 @@
 
 		<activity
 			android:name=".EditorActivity"
+			android:parentActivityName=".ShowActivity"
 			android:theme="@style/AppTheme" />
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="oak.shef.ac.uk.assignment.ShowActivity" />
 		<activity android:name=".MainActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />

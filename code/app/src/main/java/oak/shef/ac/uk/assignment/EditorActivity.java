@@ -39,8 +39,8 @@ public class EditorActivity extends AppCompatActivity {
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_editor);
-
-
+		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+		
 		Bundle b = getIntent().getExtras();
 		int position = -1;
 		if (b != null) {
@@ -191,6 +191,7 @@ public class EditorActivity extends AppCompatActivity {
 				finish();
 				return true;
 			default:
+				Log.i("ShowActivity", "Nothing happened");
 				return super.onOptionsItemSelected(item);
 		}
 	}

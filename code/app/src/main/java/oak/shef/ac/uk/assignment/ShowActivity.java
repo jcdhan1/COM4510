@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.MenuItem;
@@ -97,6 +98,7 @@ public class ShowActivity extends AppCompatActivity {
 	};
 
 	public static final int RESULT_DELETE = 2;
+	public static final int UPDATE_REQUEST = 325;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -118,8 +120,6 @@ public class ShowActivity extends AppCompatActivity {
 					Bitmap myBitmap = BitmapFactory.decodeFile(filePath);
 					mContentView.setImageBitmap(myBitmap);
 				}
-
-
 
 
 				ActionBar actionBar = getSupportActionBar();
@@ -144,6 +144,18 @@ public class ShowActivity extends AppCompatActivity {
 				// while interacting with the UI.
 				Button btnUpdate = findViewById(R.id.btn_update);
 				btnUpdate.setOnTouchListener(mDelayHideTouchListener);
+				final int pos = position;
+				btnUpdate.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						int id = getIntent().getIntExtra("id", -1);
+						Intent intent = new Intent(ShowActivity.this, EditorActivity.class);
+						intent.putExtra("position", pos);
+						intent.putExtra("id", id);
+
+						ShowActivity.this.startActivityForResult(intent, UPDATE_REQUEST);
+					}
+				});
 
 				Button btnDelete = (Button) findViewById(R.id.btn_delete);
 				btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -156,7 +168,6 @@ public class ShowActivity extends AppCompatActivity {
 								.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
 									public void onClick(DialogInterface dialog, int whichButton) {
-										Toast.makeText(ShowActivity.this, "Image deleted...", Toast.LENGTH_SHORT).show();
 										Intent data = new Intent();
 										int id = getIntent().getIntExtra("id", -1);
 										if (id != -1) {
@@ -165,7 +176,8 @@ public class ShowActivity extends AppCompatActivity {
 										data.putExtra("filePath", filePath);
 										setResult(RESULT_DELETE, data);
 										ShowActivity.this.finish();
-									}})
+									}
+								})
 								.setNegativeButton(android.R.string.no, null).show();
 					}
 				});
@@ -236,5 +248,16 @@ public class ShowActivity extends AppCompatActivity {
 	private void delayedHide(int delayMillis) {
 		mHideHandler.removeCallbacks(mHideRunnable);
 		mHideHandler.postDelayed(mHideRunnable, delayMillis);
+	}
+
+	@Override
+	protected void onActivityResult(final int requestCode, final int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == UPDATE_REQUEST && resultCode == RESULT_OK) {
+			setResult(RESULT_OK, data);
+			ShowActivity.this.finish();
+		} else {
+			Log.i("ShowActivity", "Nothing happened");
+		}
 	}
 }

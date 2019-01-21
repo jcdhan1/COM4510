@@ -150,6 +150,7 @@ public class GalleryActivity extends AppCompatActivity {
 		if (requestCode == SHOW_REQUEST) {
 			PhotoData pD;
 			switch (resultCode) {
+
 				case RESULT_OK:
 					pD = new PhotoData(data.getStringExtra("filePath"));
 					pD.setId(data.getIntExtra("id", -1));
@@ -167,7 +168,10 @@ public class GalleryActivity extends AppCompatActivity {
 
 
 					Toast.makeText(this, "Data saved", Toast.LENGTH_SHORT).show();
+					Log.i("Image update", String.format("Request %s\nResult %s", requestCode, resultCode));
+					break;
 				case ShowActivity.RESULT_DELETE:
+
 					String fP = data.getStringExtra("filePath");
 					pD = new PhotoData(data.getStringExtra(fP));
 					pD.setId(data.getIntExtra("id", -1));
@@ -188,6 +192,11 @@ public class GalleryActivity extends AppCompatActivity {
 						e.printStackTrace();
 					}
 					photoViewModel.delete(pD);
+					Toast.makeText(this, "Data deleted", Toast.LENGTH_SHORT).show();
+					Log.i("Image deletion", String.format("Request %s\nResult %s", requestCode, resultCode));
+					break;
+				default:
+					Log.i("No update or deletion", String.format("Request %s\nResult %s", requestCode, resultCode));
 			}
 		}
 
