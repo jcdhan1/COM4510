@@ -214,6 +214,10 @@ public class PhotoData implements Parcelable {
 
 	@Override
 	public String toString() {
-		return String.format("Title: %s\nDescription: %s\n%s\n(%s, %s)", this.title, this.description, (this.dateTime != null ? this.dateTime.toString() : ""), this.lat, this.lng);
+		return String.format("Title: %s\nDescription: %s\nDate & Time: %s\nLocation: (%s, %s)",
+				this.title,
+				(this.description != null ? this.description: "Add a description!"),
+				(this.dateTime != null ? this.dateTime.toString() : ""),
+				this.lat, this.lng);
 	}
 }

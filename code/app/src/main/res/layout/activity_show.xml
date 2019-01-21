@@ -25,30 +25,59 @@
 			android:id="@+id/fullscreen_content_controls"
 			style="?metaButtonBarStyle"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
+			android:layout_height="80dp"
 			android:layout_gravity="bottom|center_horizontal"
 			android:background="@color/black_overlay"
 			android:orientation="horizontal"
 			tools:ignore="UselessParent">
 
-			<Button
-				android:id="@+id/btn_update"
-				style="?metaButtonBarButtonStyle"
-				android:layout_width="@dimen/btn_size"
-				android:layout_height="@dimen/btn_size"
-				android:layout_weight="1"
-				android:layout_alignParentEnd="true"
-				android:background="@android:drawable/ic_menu_edit" />
+			<com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				xmlns:app="http://schemas.android.com/apk/res-auto"
+				android:layout_width="match_parent"
+				android:layout_height="80dp"
+				android:fitsSystemWindows="true"
+				app:alignContent="stretch"
+				app:alignItems="center">
 
-			<Button
-				android:id="@+id/btn_delete"
-				style="?metaButtonBarButtonStyle"
-				android:layout_width="@dimen/btn_size"
-				android:layout_height="@dimen/btn_size"
-				android:layout_alignParentStart="true"
-				android:layout_weight="1"
-				android:background="@android:drawable/ic_delete" />
+				<Button
+					android:id="@+id/btn_delete"
+					style="?metaButtonBarButtonStyle"
+					android:layout_width="@dimen/btn_size"
+					android:layout_height="@dimen/btn_size"
+					android:layout_alignParentStart="true"
+					android:layout_weight="1"
+					android:background="@android:drawable/ic_delete" />
+
+				<ScrollView
+					android:layout_width="256dp"
+					android:layout_height="80dp"
+					android:layout_alignParentStart="true"
+					android:layout_alignParentBottom="true"
+					app:layout_flexGrow="1">
+
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:orientation="vertical">
+
+						<TextView
+							android:id="@+id/txt_data"
+							style="@style/Base.TextAppearance.AppCompat.Inverse"
+							android:layout_width="match_parent"
+							android:layout_height="match_parent" />
+					</LinearLayout>
+				</ScrollView>
+
+				<Button
+					android:id="@+id/btn_update"
+					style="?metaButtonBarButtonStyle"
+					android:layout_width="@dimen/btn_size"
+					android:layout_height="@dimen/btn_size"
+					android:layout_alignParentEnd="true"
+					android:layout_weight="1"
+					android:background="@android:drawable/ic_menu_edit" />
+			</com.google.android.flexbox.FlexboxLayout>
+
 		</RelativeLayout>
 	</FrameLayout>
-
 </FrameLayout>

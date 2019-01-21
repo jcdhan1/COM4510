@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import oak.shef.ac.uk.assignment.database.PhotoData;
 
@@ -154,6 +155,9 @@ public class ShowActivity extends AppCompatActivity {
 						ShowActivity.this.startActivityForResult(intent, UPDATE_REQUEST);
 					}
 				});
+
+				TextView txtData = (TextView) findViewById(R.id.txt_data);
+				txtData.setText(element.toString());
 
 				Button btnDelete = (Button) findViewById(R.id.btn_delete);
 				btnDelete.setOnClickListener(new View.OnClickListener() {
