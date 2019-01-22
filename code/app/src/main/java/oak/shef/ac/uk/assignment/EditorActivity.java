@@ -25,6 +25,8 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,7 +37,7 @@ public class EditorActivity extends AppCompatActivity {
 
 	private int year, month, day, hour, minute;
 	private Button btnDate, btnTime, btnLoc;
-	private TextView edtTitle, edtDescription, txtLoc;
+	private TextView edtTitle, edtDescription, txtLat, txtLng;
 	private String filePath;
 	public static final String dPattern = "dd/MM/yyyy", tPattern = "HH:mm";
 	public static int PLACE_PICKER_REQUEST = 1;
@@ -55,12 +57,13 @@ public class EditorActivity extends AppCompatActivity {
 				ImageView imageView = (ImageView) findViewById(R.id.img_preview);
 				edtTitle = (TextView) findViewById(R.id.edt_title);
 				edtDescription = (TextView) findViewById(R.id.edt_description);
-				txtLoc = (TextView) findViewById(R.id.txt_loc);
+				txtLat = (TextView) findViewById(R.id.txt_lat);
+				txtLng = (TextView) findViewById(R.id.txt_lng);
 				btnDate = (Button) findViewById(R.id.btn_date);
 				btnTime = (Button) findViewById(R.id.btn_time);
 				btnLoc = (Button) findViewById(R.id.btn_loc);
 
-				PhotoData element = ImageAdapter.getPhotos().get(position);
+				final PhotoData element = ImageAdapter.getPhotos().get(position);
 				if (element.getImage() != -1) {
 					imageView.setImageResource(element.getImage());
 				} else if (element.getFilePath() != null) {
@@ -70,7 +73,8 @@ public class EditorActivity extends AppCompatActivity {
 				}
 				edtTitle.setText(element.getTitle());
 				edtDescription.setText(element.getDescription());
-				txtLoc.setText(String.format("(%s, %s)", element.getLat(), element.getLng()));
+				txtLat.setText(Double.toString(element.getLat()));
+				txtLng.setText(Double.toString(element.getLng()));
 
 				Calendar calendar = Calendar.getInstance();
 				if (element.getDateTime() != null) {
@@ -99,16 +103,17 @@ public class EditorActivity extends AppCompatActivity {
 						setTime(v);
 					}
 				});
-
+				//set location
 				btnLoc.setOnClickListener(new View.OnClickListener() {
 					@Override
-					public void onClick (View v) {
+					public void onClick(View v) {
 						PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+						builder.setLatLngBounds(MainActivity.getLatLngBounds(element.getLat(), element.getLng()));
 						try {
 							startActivityForResult(builder.build(EditorActivity.this), PLACE_PICKER_REQUEST);
-						} catch(GooglePlayServicesRepairableException r){
+						} catch (GooglePlayServicesRepairableException r) {
 							r.printStackTrace();
-						} catch(GooglePlayServicesNotAvailableException na) {
+						} catch (GooglePlayServicesNotAvailableException na) {
 							na.printStackTrace();
 						}
 					}
@@ -121,7 +126,6 @@ public class EditorActivity extends AppCompatActivity {
 
 
 	}
-
 
 	@SuppressWarnings("deprecation")
 	public void setDate(View view) {
@@ -206,6 +210,9 @@ public class EditorActivity extends AppCompatActivity {
 				data.putExtra(Intent.EXTRA_TEXT, edtDescription.getText().toString());
 				data.putExtra("dateTimeString", btnDate.getText().toString() + " " + btnTime.getText().toString());
 				data.putExtra("filePath", filePath);
+				data.putExtra("lat", Double.parseDouble(txtLat.getText().toString()));
+				data.putExtra("lng", Double.parseDouble(txtLng.getText().toString()));
+				Log.i("LatLng", String.format("%s, %s",txtLat.getText().toString(),txtLng.getText().toString()));
 				int id = getIntent().getIntExtra("id", -1);
 				if (id != -1) {
 					data.putExtra("id", id);
@@ -235,10 +242,8 @@ public class EditorActivity extends AppCompatActivity {
 		if (requestCode == PLACE_PICKER_REQUEST) {
 			if (resultCode == RESULT_OK) {
 				Place place = PlacePicker.getPlace(data, this);
-				String toastMsg = String.format("Place: %s", place.getName());
-				Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
-			} else {
-				Log.i("PlacePicker", "something went wrong");
+				txtLat.setText(Double.toString(place.getLatLng().latitude));
+				txtLng.setText(Double.toString(place.getLatLng().longitude));
 			}
 		}
 	}

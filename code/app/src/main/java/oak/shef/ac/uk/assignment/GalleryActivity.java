@@ -174,6 +174,9 @@ public class GalleryActivity extends AppCompatActivity implements LocationListen
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}
+					pD.setLat(data.getDoubleExtra("lat", 0));
+					pD.setLng(data.getDoubleExtra("lng", 0));
+					Log.i("LatLng", String.format("%s, %s", data.getDoubleExtra("lat", 0),data.getDoubleExtra("lng", 0)));
 					photoViewModel.update(pD);
 
 

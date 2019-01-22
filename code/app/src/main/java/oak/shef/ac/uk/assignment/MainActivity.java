@@ -16,6 +16,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+
 public class MainActivity extends AppCompatActivity {
 	private static final int REQUEST_READ_EXTERNAL_STORAGE = 2987;
 	private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 7829;
@@ -95,5 +98,12 @@ public class MainActivity extends AppCompatActivity {
 		} else {
 			Log.i("Permissions", "all enabled");
 		}
+	}
+
+	public static LatLngBounds getLatLngBounds(double lat, double lng) {
+		float minute = 1/60;
+		LatLng southwest = new LatLng(lat - minute, lng - minute);
+		LatLng northeast = new LatLng(lat + minute, lng + minute);
+		return new LatLngBounds(southwest, northeast);
 	}
 }
