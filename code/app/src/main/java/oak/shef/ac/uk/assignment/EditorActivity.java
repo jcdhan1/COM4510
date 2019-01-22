@@ -21,6 +21,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -29,10 +34,11 @@ import oak.shef.ac.uk.assignment.database.PhotoData;
 public class EditorActivity extends AppCompatActivity {
 
 	private int year, month, day, hour, minute;
-	private Button btnDate, btnTime;
-	private TextView edtTitle, edtDescription;
+	private Button btnDate, btnTime, btnLoc;
+	private TextView edtTitle, edtDescription, txtLoc;
 	private String filePath;
 	public static final String dPattern = "dd/MM/yyyy", tPattern = "HH:mm";
+	public static int PLACE_PICKER_REQUEST = 1;
 
 
 	@Override
@@ -49,9 +55,10 @@ public class EditorActivity extends AppCompatActivity {
 				ImageView imageView = (ImageView) findViewById(R.id.img_preview);
 				edtTitle = (TextView) findViewById(R.id.edt_title);
 				edtDescription = (TextView) findViewById(R.id.edt_description);
+				txtLoc = (TextView) findViewById(R.id.txt_loc);
 				btnDate = (Button) findViewById(R.id.btn_date);
 				btnTime = (Button) findViewById(R.id.btn_time);
-
+				btnLoc = (Button) findViewById(R.id.btn_loc);
 
 				PhotoData element = ImageAdapter.getPhotos().get(position);
 				if (element.getImage() != -1) {
@@ -63,6 +70,7 @@ public class EditorActivity extends AppCompatActivity {
 				}
 				edtTitle.setText(element.getTitle());
 				edtDescription.setText(element.getDescription());
+				txtLoc.setText(String.format("(%s, %s)", element.getLat(), element.getLng()));
 
 				Calendar calendar = Calendar.getInstance();
 				if (element.getDateTime() != null) {
@@ -91,6 +99,22 @@ public class EditorActivity extends AppCompatActivity {
 						setTime(v);
 					}
 				});
+
+				btnLoc.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick (View v) {
+						PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+						try {
+							startActivityForResult(builder.build(EditorActivity.this), PLACE_PICKER_REQUEST);
+						} catch(GooglePlayServicesRepairableException r){
+							r.printStackTrace();
+						} catch(GooglePlayServicesNotAvailableException na) {
+							na.printStackTrace();
+						}
+					}
+				});
+
+
 			}
 
 		}
@@ -205,5 +229,17 @@ public class EditorActivity extends AppCompatActivity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu_editor, menu);
 		return super.onCreateOptionsMenu(menu);
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == PLACE_PICKER_REQUEST) {
+			if (resultCode == RESULT_OK) {
+				Place place = PlacePicker.getPlace(data, this);
+				String toastMsg = String.format("Place: %s", place.getName());
+				Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+			} else {
+				Log.i("PlacePicker", "something went wrong");
+			}
+		}
 	}
 }

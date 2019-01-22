@@ -169,7 +169,7 @@ public class ShowActivity extends AppCompatActivity {
 						new AlertDialog.Builder(ShowActivity.this)
 								.setTitle("Showing Exif Data")
 								.setMessage(allExif)
-								.setIcon(android.R.drawable.ic_dialog_alert)
+								.setIcon(android.R.drawable.ic_dialog_info)
 								.setPositiveButton(android.R.string.ok, null).show();
 					}
 				});
@@ -181,7 +181,7 @@ public class ShowActivity extends AppCompatActivity {
 						new AlertDialog.Builder(ShowActivity.this)
 								.setTitle("Deletion")
 								.setMessage("Do you really want to delete this image?")
-								.setIcon(android.R.drawable.ic_dialog_info)
+								.setIcon(android.R.drawable.ic_dialog_alert)
 								.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
 									public void onClick(DialogInterface dialog, int whichButton) {
