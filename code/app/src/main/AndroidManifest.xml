@@ -18,7 +18,8 @@
 			android:name="org.apache.http.legacy"
 			android:required="false" />
 
-		<activity android:name=".GalleryActivity" />
+		<activity android:name=".GalleryActivity"
+			android:theme="@style/AppTheme" />
 		<!--
 			 The API key for Google Maps-based APIs is defined as a string resource.
 			 (See the file "res/values/google_maps_api.xml").
@@ -63,6 +64,13 @@
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="oak.shef.ac.uk.assignment.ShowActivity" />
+		</activity>
+		<activity
+			android:name=".MapsActivity2"
+			android:label="@string/title_activity_maps2">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="oak.shef.ac.uk.assignment.MainActivity" />
 		</activity>
 	</application>
 

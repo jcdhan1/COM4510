@@ -5,8 +5,10 @@
 	<string name="descriptionWatermark">Enter a description...</string>
 	<string name="dateTimeLabel"><![CDATA[Date & Time]]></string>
 	<string name="action_settings">Settings</string>
-	<string name="enterText">Enter Gallery</string>
+	<string name="enterText1">Enter Gallery</string>
+	<string name="enterText2">Enter Maps</string>
 
 	<string name="title_activity_show">ShowActivity</string>
 	<string name="title_activity_maps">Map</string>
+	<string name="title_activity_maps2">Map</string>
 </resources>

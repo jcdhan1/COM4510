@@ -81,7 +81,7 @@ public class PhotoData implements Parcelable {
 	}
 
 	public String getDescription() {
-		return description;
+		return (this.description != null ? this.description : "");
 	}
 
 	public void setDescription(String description) {
@@ -214,11 +214,11 @@ public class PhotoData implements Parcelable {
 		}
 	}
 
-	public String getAllExif(){
-		ExifInterface eI=this.getExif();
+	public String getAllExif() {
+		ExifInterface eI = this.getExif();
 
-		if (eI!=null) {
-			Class<ExifInterface> eIc= ExifInterface.class;
+		if (eI != null) {
+			Class<ExifInterface> eIc = ExifInterface.class;
 			Field[] arr = eIc.getFields();
 			//Get all Exif strings
 			ArrayList<String> tags = new ArrayList<String>();
@@ -238,7 +238,7 @@ public class PhotoData implements Parcelable {
 				sB.append(tag);
 				sB.append(": ");
 				String val = eI.getAttribute(tag);
-				sB.append(val!=null ? val : "");
+				sB.append(val != null ? val : "");
 				sB.append("\n");
 			}
 			return sB.toString();
@@ -251,7 +251,7 @@ public class PhotoData implements Parcelable {
 	public String toString() {
 		return String.format("Title: %s\nDescription: %s\nDate & Time: %s\nLocation: (%s, %s)",
 				this.title,
-				(this.description != null ? this.description: "Add a description!"),
+				(this.description != null ? this.description : "Add a description!"),
 				(this.dateTime != null ? this.dateTime.toString() : ""),
 				this.lat, this.lng);
 	}

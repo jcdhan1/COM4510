@@ -209,7 +209,6 @@ public class ShowActivity extends AppCompatActivity {
 					}
 				});
 			}
-
 		}
 	}
 

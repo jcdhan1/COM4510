@@ -16,11 +16,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import oak.shef.ac.uk.assignment.database.PhotoData;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-
 	private GoogleMap mMap;
 	private String filePath;
 	private MarkerOptions imageMarker;
-	public static int MARKER_WIDTH=128;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,16 +38,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 				final PhotoData element = ImageAdapter.getPhotos().get(position);
 				filePath = element.getFilePath();
 				Bitmap myBitmap = BitmapFactory.decodeFile(filePath);
-				myBitmap = MainActivity.resizeBitmap(myBitmap, MARKER_WIDTH);
+				myBitmap = MainActivity.resizeBitmap(myBitmap, MainActivity.MARKER_WIDTH);
 				imageMarker = new MarkerOptions()
-						.position(new LatLng(element.getLat(),element.getLng()))
+						.position(new LatLng(element.getLat(), element.getLng()))
 						.title(element.getTitle())
 						.snippet(element.getDescription())
 						.icon(BitmapDescriptorFactory.fromBitmap(myBitmap));
 			}
 		}
 	}
-
 
 	/**
 	 * Manipulates the map once available.
@@ -63,10 +60,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 		mMap = googleMap;
-		if(imageMarker!=null) {
+		if (imageMarker != null) {
 			mMap.addMarker(imageMarker);
 			mMap.moveCamera(CameraUpdateFactory.newLatLng(imageMarker.getPosition()));
-			mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(MainActivity.getLatLngBounds(imageMarker.getPosition()),256,256, 1));
+			mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(MainActivity.getLatLngBounds(imageMarker.getPosition()), 256, 256, 1));
 		}
 	}
 }

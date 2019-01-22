@@ -27,23 +27,33 @@ public class MainActivity extends AppCompatActivity {
 	private static final int REQUEST_CAMERA = 5345;
 	private static final int REQUEST_ACCESS_FINE_LOCATION = 6876;
 	private static final float MINUTE = 1 / 60;
+	public static int MARKER_WIDTH = 128;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		checkPermissions(getApplicationContext(), REQUEST_READ_EXTERNAL_STORAGE);
-		configBtnEnter();
-
-
+		configBtnEnterGallery();
+		configBtnEnterMaps();
 	}
 
-	private void configBtnEnter() {
-		Button btnEnter = (Button) findViewById(R.id.btn_enter);
-		btnEnter.setOnClickListener(new View.OnClickListener() {
+	private void configBtnEnterGallery() {
+		Button btnEnterGallery = (Button) findViewById(R.id.btn_enter_gallery);
+		btnEnterGallery.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(MainActivity.this, GalleryActivity.class));
+			}
+		});
+	}
+
+	private void configBtnEnterMaps() {
+		Button btnEnterMaps = (Button) findViewById(R.id.btn_enter_maps);
+		btnEnterMaps.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(MainActivity.this, MapsActivity2.class));
 			}
 		});
 	}

@@ -21,7 +21,6 @@ import android.support.media.ExifInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -64,9 +63,6 @@ public class GalleryActivity extends AppCompatActivity implements LocationListen
 
 		setContentView(R.layout.activity_gallery);
 
-
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-		setSupportActionBar(toolbar);
 		mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 
