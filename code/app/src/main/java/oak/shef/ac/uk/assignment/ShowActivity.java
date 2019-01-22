@@ -143,7 +143,7 @@ public class ShowActivity extends AppCompatActivity {
 				// Upon interacting with UI controls, delay any scheduled hide()
 				// operations to prevent the jarring behavior of controls going away
 				// while interacting with the UI.
-				Button btnUpdate = findViewById(R.id.btn_update);
+				Button btnUpdate = (Button) findViewById(R.id.btn_update);
 				btnUpdate.setOnTouchListener(mDelayHideTouchListener);
 				final int pos = position;
 				btnUpdate.setOnClickListener(new View.OnClickListener() {
@@ -161,7 +161,7 @@ public class ShowActivity extends AppCompatActivity {
 				TextView txtData = (TextView) findViewById(R.id.txt_data);
 				txtData.setText(element.toString());
 				final String allExif = element.getAllExif();
-				Button btnExif = findViewById(R.id.btn_exif);
+				Button btnExif = (Button) findViewById(R.id.btn_exif);
 				btnExif.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -171,6 +171,16 @@ public class ShowActivity extends AppCompatActivity {
 								.setMessage(allExif)
 								.setIcon(android.R.drawable.ic_dialog_info)
 								.setPositiveButton(android.R.string.ok, null).show();
+					}
+				});
+
+				Button btnMap = (Button) findViewById(R.id.btn_map);
+				btnMap.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent mapIntent = new Intent(ShowActivity.this, MapsActivity.class);
+						mapIntent.putExtra("mapPos", pos);
+						startActivity(mapIntent);
 					}
 				});
 

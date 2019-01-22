@@ -44,10 +44,10 @@
 					style="?metaButtonBarButtonStyle"
 					android:layout_width="@dimen/btn_size"
 					android:layout_height="@dimen/btn_size"
-					app:layout_minWidth="@dimen/btn_size"
 					android:layout_alignParentStart="true"
 					android:layout_weight="1"
-					android:background="@android:drawable/ic_delete" />
+					android:background="@android:drawable/ic_delete"
+					app:layout_minWidth="@dimen/btn_size" />
 
 				<ScrollView
 					android:layout_width="256dp"
@@ -73,20 +73,31 @@
 					android:id="@+id/btn_exif"
 					style="?metaButtonBarButtonStyle"
 					android:layout_width="@dimen/btn_size"
-					app:layout_minWidth="@dimen/btn_size"
 					android:layout_height="@dimen/btn_size"
 					android:layout_alignParentEnd="true"
 					android:layout_weight="1"
-					android:background="@android:drawable/ic_menu_info_details" />
+					android:background="@android:drawable/ic_menu_info_details"
+					app:layout_minWidth="@dimen/btn_size" />
+
+				<Button
+					android:id="@+id/btn_map"
+					style="?metaButtonBarButtonStyle"
+					android:layout_width="@dimen/btn_size"
+					android:layout_height="@dimen/btn_size"
+					android:layout_alignParentEnd="true"
+					android:layout_weight="1"
+					android:background="@android:drawable/ic_menu_mapmode"
+					app:layout_minWidth="@dimen/btn_size" />
+
 				<Button
 					android:id="@+id/btn_update"
 					style="?metaButtonBarButtonStyle"
 					android:layout_width="@dimen/btn_size"
-					app:layout_minWidth="@dimen/btn_size"
 					android:layout_height="@dimen/btn_size"
 					android:layout_alignParentEnd="true"
 					android:layout_weight="1"
-					android:background="@android:drawable/ic_menu_edit" />
+					android:background="@android:drawable/ic_menu_edit"
+					app:layout_minWidth="@dimen/btn_size" />
 			</com.google.android.flexbox.FlexboxLayout>
 
 		</RelativeLayout>

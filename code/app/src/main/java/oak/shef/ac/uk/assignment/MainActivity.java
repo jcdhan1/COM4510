@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 	private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 7829;
 	private static final int REQUEST_CAMERA = 5345;
 	private static final int REQUEST_ACCESS_FINE_LOCATION = 6876;
+	private static final float MINUTE = 1 / 60;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,10 +103,62 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
+	/**
+	 * Get LatLngBounds each corner a minute of arc away from the coordinates
+	 *
+	 * @param lat latitude
+	 * @param lng longitude
+	 * @return LatLngBounds
+	 */
 	public static LatLngBounds getLatLngBounds(double lat, double lng) {
-		float minute = 1/60;
-		LatLng southwest = new LatLng(lat - minute, lng - minute);
-		LatLng northeast = new LatLng(lat + minute, lng + minute);
+		LatLng southwest = new LatLng(lat - MINUTE, lng - MINUTE);
+		LatLng northeast = new LatLng(lat + MINUTE, lng + MINUTE);
 		return new LatLngBounds(southwest, northeast);
+	}
+
+	/**
+	 * Overload to use with a LatLng object instead of two doubles.
+	 * @param latLng latitude and longitude in a single object
+	 * @return LatLngBounds
+	 */
+	public static LatLngBounds getLatLngBounds(LatLng latLng) {
+		return getLatLngBounds(latLng.latitude, latLng.longitude);
+	}
+
+	/**
+	 * Resize a bitmap
+	 *
+	 * @param bm        bitmap to resize
+	 * @param newWidth  new width
+	 * @param newHeight new height
+	 * @return resized bitmap
+	 */
+	public static Bitmap resizeBitmap(Bitmap bm, int newWidth, int newHeight) {
+		int width = bm.getWidth();
+		int height = bm.getHeight();
+		float scaleWidth = ((float) newWidth) / width;
+		float scaleHeight = ((float) newHeight) / height;
+		// CREATE A MATRIX FOR THE MANIPULATION
+		Matrix matrix = new Matrix();
+		// RESIZE THE BIT MAP
+		matrix.postScale(scaleWidth, scaleHeight);
+
+		// "RECREATE" THE NEW BITMAP
+		Bitmap resizedBitmap = Bitmap.createBitmap(
+				bm, 0, 0, width, height, matrix, false);
+		bm.recycle();
+		return resizedBitmap;
+	}
+
+	/**
+	 * Overload to keep constant ratio given a newWidth only.
+	 *
+	 * @param bm       bitmap to resize
+	 * @param newWidth new width
+	 * @return resized bitmap
+	 */
+	public static Bitmap resizeBitmap(Bitmap bm, int newWidth) {
+		int newHeight = bm.getHeight() * newWidth / bm.getWidth();
+		return resizeBitmap(bm, newWidth, newHeight);
 	}
 }
